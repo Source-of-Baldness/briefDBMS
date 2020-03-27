@@ -30,9 +30,6 @@ public class ManinUI {
             //跳转语法解析工具，定位语法类型
             AnalysisUtil au= new AnalysisUtil();
             au.grammarPositon(sql);
-            System.out.printf("yelin");
-            System.out.println("2020/3/27");
-            System.out.println("zyz1");
         }
 
 
