@@ -11,11 +11,8 @@ import java.util.Scanner;
 
 public class ManinUI {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         System.out.println("hello briefDBMS");
-
-
-
         while(true){
             System.out.println("1 选择数据库 当前数据:master");
             Scanner input = new Scanner(System.in);
@@ -31,9 +28,5 @@ public class ManinUI {
             AnalysisUtil au= new AnalysisUtil();
             au.grammarPositon(sql);
         }
-
-
-
-
     }
 }

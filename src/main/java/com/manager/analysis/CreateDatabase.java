@@ -45,16 +45,6 @@ public class CreateDatabase {
         String webTime="Database creation time:"+TimeUtil.getNetworkTime();
         if(fileUtil.writeToFile(webTime,database.getFilename() + "\\" + database.getName()+"_LOG.txt"))
             System.out.println("日志文件 writed");
-
-
-
-
-
-
-
-
-
-
     }
 
     //关键参数定位

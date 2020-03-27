@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class AnalysisUtil {
 
     //语法解析工具，会自动识别增删改查操作，返回到指定的查询管理器类
-    public void grammarPositon(String sql) throws IOException {
+    public void grammarPositon(String sql) throws Exception {
         System.out.println("注入的SQL语句："+sql);
         //初始化对象
         Select select = new Select();
@@ -17,8 +17,9 @@ public class AnalysisUtil {
         Delete delete = new Delete();
         Insert insert = new Insert();
         CreateDatabase createDatabase = new CreateDatabase();
+        CreateTable createTable = new CreateTable();
         //注入正则表达式
-        Pattern p = Pattern.compile("^[\\s]*(INSERT|SELECT|ALTER|DELETE|UPDATE|CREATE DATABASE)[\\s](.|\\n)+$");
+        Pattern p = Pattern.compile("^[\\s]*(INSERT|SELECT|ALTER|DELETE|UPDATE|CREATE DATABASE|CREATE TABLE)[\\s](.|\\n)+$");
         Matcher m = p.matcher(sql);
         boolean result = m.matches();
         System.out.println(result);
@@ -39,12 +40,16 @@ public class AnalysisUtil {
                         if(split_sql[(i+1)].equals("DATABASE")){
                             createDatabase.baseAnalysis(sql);
                         }
+                        if(split_sql[(i+1)].equals("TABLE")){
+                            createTable.baseAnalysis(sql);
+                        }
                     }
                 }
                 break;
             }
         }
     }
+
 
     //限定符判断，建立限定符库
     public boolean qualifier(String sql){
