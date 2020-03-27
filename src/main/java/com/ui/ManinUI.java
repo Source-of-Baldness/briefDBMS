@@ -31,6 +31,8 @@ public class ManinUI {
             AnalysisUtil au= new AnalysisUtil();
             au.grammarPositon(sql);
             System.out.printf("yelin");
+            System.out.println("2020/3/27");
+
         }
 
 
