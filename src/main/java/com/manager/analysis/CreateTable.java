@@ -114,6 +114,7 @@ public class CreateTable {
         //列名/属性的完整性检验
         public boolean integrityCheck(Table table){
             return true;
+
        }
 
     //写入主数据文件
