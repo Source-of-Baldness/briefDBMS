@@ -1,5 +1,6 @@
 package com.ui;
 
+import com.manager.data.UserRecord;
 import com.manager.security.AccessControl;
 import com.pojo.User;
 import com.util.AnalysisUtil;
@@ -29,8 +30,11 @@ public class ManinUI {
 
         while(true){
             Scanner input = new Scanner(System.in);
+            UserRecord userRecord = new UserRecord();
             System.out.println("Current Database 'master' ");
-            databaseNames = fileUtil.getDirName("F:\\BRIEFDBMS\\server\\"+serveUser.getId()+"\\database");
+            //读取该用户下的数据库
+            userRecord.getUserDatabase();
+            System.out.println(databaseNames);
 
             //输入
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

@@ -20,10 +20,10 @@ public class SwitchDatabase {
                 System.out.println("当前数据库为:"+ManinUI.currentDatabase);
 
             }else{
-                System.out.println("SWITCH 附近有语法错误。");
+                System.out.println("切换的数据库不存在。");
             }
         }else{
-            System.out.println("切换的数据库不存在。");
+            System.out.println("SWITCH 附近有语法错误。");
 
         }
     }

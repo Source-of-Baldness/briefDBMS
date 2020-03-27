@@ -2,6 +2,7 @@ package com.manager.analysis;
 
 import com.manager.data.PrimaryRecord;
 import com.pojo.Database;
+import com.ui.ManinUI;
 import com.util.FileUtil;
 import com.util.TimeUtil;
 import net.sf.json.JSONObject;
@@ -59,7 +60,7 @@ public class CreateDatabase {
                 char temp[] = temp_split.toCharArray();
                     //截取
                     //路径是否正确判断
-                    database.setFilename(temp_split.substring(temp_split.indexOf('=') + 1));
+                    database.setFilename(temp_split.substring(temp_split.indexOf('=') + 1)+"/"+name);
                     System.out.println("filename:" + database.getFilename());
             }
             //size
@@ -78,6 +79,7 @@ public class CreateDatabase {
             }
         }
         //end
+        database.setUser(ManinUI.serveUser.getId());
         //参数完整性检验
         int flag=0;
         if(database.getName()!=null){
@@ -101,5 +103,7 @@ public class CreateDatabase {
             return database;
         return null;
     }
+
+    //相同库判断
 
 }

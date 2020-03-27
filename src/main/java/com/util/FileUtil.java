@@ -75,4 +75,15 @@ public class FileUtil {
         return databaseNames;
     }
 
+//按行读取txt内容
+    public ArrayList<String> readLine(String path) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        String line = null;
+        ArrayList<String> lines =new ArrayList<String>();
+        while ((line = br.readLine()) != null) {
+            lines.add(line);
+        }
+        br.close();
+        return lines;
+    }
 }

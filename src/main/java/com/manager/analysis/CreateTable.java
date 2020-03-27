@@ -1,5 +1,7 @@
 package com.manager.analysis;
 
+import com.manager.data.PrimaryRecord;
+import com.manager.data.UserRecord;
 import com.pojo.Primarydata;
 import com.pojo.Table;
 import net.sf.json.JSONObject;
@@ -17,7 +19,6 @@ public class CreateTable {
         System.out.println("二次验证"+result);
         //解析表属性
         parameterSplit(sql);
-
     }
 
     //关键参数定位
@@ -71,13 +72,20 @@ public class CreateTable {
         System.out.println(table_string);
         //封装主数据文件实体类
         primarydata.setTableName(tableName);
-        //primarydata.setTablePath();
+        UserRecord userRecord = new UserRecord();
+        primarydata.setTablePath(userRecord.getDatabasePath());
         primarydata.setAlltable(table);
 
         //属性完整性审核
+        PrimaryRecord primaryRecord = new PrimaryRecord();
         if(integrityCheck(table)){
             System.out.println("有完整的列名支撑");
             //存入主数据文件
+            if(primaryRecord.tableToPrimary(primarydata)){
+                System.out.println("步骤1成功");
+            }else {
+                System.out.println("步骤1失败");
+            }
             //存入表文件
         }else {
             System.out.println("创建表失败");
@@ -105,7 +113,7 @@ public class CreateTable {
 
         //列名/属性的完整性检验
         public boolean integrityCheck(Table table){
-            return false;
+            return true;
        }
 
     //写入主数据文件
