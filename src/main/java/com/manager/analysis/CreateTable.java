@@ -28,8 +28,8 @@ public class CreateTable {
         List<String> datatype = new ArrayList<String>();//数据类型
         List<Boolean> isNull = new ArrayList<Boolean>();//是否为空
         List<Boolean> isPrimary = new ArrayList<Boolean>();//是否为主键
-        List<String> tableName;//表名
-        List<String> tablePath;//表的路径
+        String tableName;//表名
+        String tablePath;//表的路径
 
         //取得列名字符串位置,从（后的第一个字母开始定位至结束
         int attribute_indexOf_begin=sql.indexOf("(");
@@ -37,6 +37,7 @@ public class CreateTable {
         System.out.println(attribute_all);
 
 // begin 开始分离table属性
+
         //二次拆除
         String split_attribute_all[]=attribute_all.split(",");
         for(String one_attribution:split_attribute_all) {
@@ -54,14 +55,25 @@ public class CreateTable {
             isNull.add(isNotNull(split_one_attribution));
             isPrimary.add(isPrimaryKey(split_one_attribution));
         }
-        //封装实体类
+        //定位表名
+        String table_begin_split = sql.substring(0,attribute_indexOf_begin);
+        System.out.println(table_begin_split);
+        String table_end_split[] = table_begin_split.split("\\s+");
+        tableName=table_end_split[2];//定位表名
+        //封装table实体类
         table.setAttribute(attribute);
         table.setDatatype(datatype);
         table.setIsNull(isNull);
         table.setIsPrimary(isPrimary);
+        //获取json对象
         JSONObject json = JSONObject.fromObject(table);
         String table_string = json.toString();
         System.out.println(table_string);
+        //封装主数据文件实体类
+        primarydata.setTableName(tableName);
+        //primarydata.setTablePath();
+        primarydata.setAlltable(table);
+
         //属性完整性审核
         if(integrityCheck(table)){
             System.out.println("有完整的列名支撑");
