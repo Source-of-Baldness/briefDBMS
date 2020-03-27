@@ -50,15 +50,6 @@ public class AnalysisUtil {
         }
     }
 
-    //过滤字符串空格
-    public String filterSpaces(String str){
-//        String string = "0.0.0.0         0.255.255.255   IANA保留地址       CZ88.NET";
-//        String test = str.replaceAll("\\s{1,}", " ");
-//        System.out.println(test);
-//        string = test;
-//        String[] str = string.split(" ");
-        return null;
-    }
 
     //限定符判断，建立限定符库
     public boolean qualifier(String sql){

@@ -91,10 +91,10 @@ public class CreateTable {
                 return true;
         }
 
-        //列名/属性完整性检验
-    public boolean integrityCheck(Table table){
+        //列名/属性的完整性检验
+        public boolean integrityCheck(Table table){
             return false;
-    }
+       }
 
     //写入主数据文件
 
