@@ -32,7 +32,7 @@ public class ManinUI {
             au.grammarPositon(sql);
             System.out.printf("yelin");
             System.out.println("2020/3/27");
-
+            System.out.println("zyz1");
         }
 
 
