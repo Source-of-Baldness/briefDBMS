@@ -1,6 +1,7 @@
 package com.manager.analysis;
 
 import com.manager.data.PrimaryRecord;
+import com.manager.data.TableRecord;
 import com.manager.data.UserRecord;
 import com.pojo.Primarydata;
 import com.pojo.Table;
@@ -73,22 +74,26 @@ public class CreateTable {
         //封装主数据文件实体类
         primarydata.setTableName(tableName);
         UserRecord userRecord = new UserRecord();
-        primarydata.setTablePath(userRecord.getDatabasePath());
+        primarydata.setTablePath(userRecord.getDatabasePath()+"/TABLE");
         primarydata.setAlltable(table);
 
         //属性完整性审核
         PrimaryRecord primaryRecord = new PrimaryRecord();
         if(integrityCheck(table)){
-            System.out.println("有完整的列名支撑");
+            System.out.println("SQL命令成功完成");
             //存入主数据文件
             if(primaryRecord.tableToPrimary(primarydata)){
-                System.out.println("步骤1成功");
+                System.out.println("存入主数据文件成功");
             }else {
-                System.out.println("步骤1失败");
+                System.out.println("存入主数据文件失败");
             }
-            //存入表文件
+            //基础数据存入表文件
+            TableRecord tableRecord = new TableRecord();
+            //tableRecord.writeBase_Table();
+
+
         }else {
-            System.out.println("创建表失败");
+            System.out.println("CreateTable类在分离参数时发生未知错误");
         }
           return null;
         }
@@ -113,12 +118,22 @@ public class CreateTable {
 
         //列名/属性的完整性检验
         public boolean integrityCheck(Table table){
+        //检测列名是否完整
+            for(String attribute:table.getAttribute()){
+                if(attribute==null || "".equals(attribute) || " ".equals(attribute))
+                    return false;
+            }
+            //检测数据类型是否符合规范
+            for(String datatype:table.getAttribute()){
+                if(datatype.indexOf("INT")==(-1)) {
+                    if (datatype.indexOf("VARCHAR(0)") != (-1))
+                        return false;
+                }
+            }
             return true;
-
        }
 
-    //写入主数据文件
 
-    //写入表结构文件
+
 }
 

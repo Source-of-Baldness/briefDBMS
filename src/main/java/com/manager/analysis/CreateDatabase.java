@@ -60,7 +60,7 @@ public class CreateDatabase {
                 char temp[] = temp_split.toCharArray();
                     //截取
                     //路径是否正确判断
-                    database.setFilename(temp_split.substring(temp_split.indexOf('=') + 1)+"/"+name);
+                    database.setFilename(temp_split.substring(temp_split.indexOf('=') + 1)+"/"+database.getName());
                     System.out.println("filename:" + database.getFilename());
             }
             //size
