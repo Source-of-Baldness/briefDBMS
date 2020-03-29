@@ -9,10 +9,14 @@ public class Select {
     public void baseAnalysis(String sql){
         System.out.println("二次正则判断");
         //二次正则判断
-        Pattern p = Pattern.compile("^[\\s]*SELECT[\\s]+(([A-Z][A-Z]*[\\s]*,[\\s]*)*([A-Z][A-Z]*)|\\*)[\\s]+FROM[\\s]+([A-Z][A-Z]*)([\\s]+WHERE[\\s]+([A-Z][A-Z]*=[^\\s]+[\\s]*(OR|AND)[\\s]*)*([A-Z][A-Z]*=[^\\s]+[\\s]*)[\\s]*)?$");
-        Matcher m = p.matcher(sql);
-        boolean result = m.matches();
-        System.out.println(result);
-
+//        Pattern p = Pattern.compile("^[\\s]*SELECT[\\s]+(([A-Z][A-Z]*[\\s]*,[\\s]*)*([A-Z][A-Z]*)|\\*)[\\s]+FROM[\\s]+([A-Z][A-Z]*)([\\s]+WHERE[\\s]+([A-Z][A-Z]*=[^\\s]+[\\s]*(OR|AND)[\\s]*)*([A-Z][A-Z]*=[^\\s]+[\\s]*)[\\s]*)?$");
+//        Matcher m = p.matcher(sql);
+//        boolean result = m.matches();
+//        System.out.println(result);
+        boolean result=false;
+        //判断输入语句是否符合语法规则
+        //1.判断是否含sql关键字
+        Pattern p1=Pattern.compile("");
+        
     }
 }
