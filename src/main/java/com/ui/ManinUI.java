@@ -36,15 +36,16 @@ public class ManinUI {
             userRecord.getUserDatabase();
             System.out.println(databaseNames);
 
-            //输入
+            //get SQL
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             String sql = br.readLine();
-            //全部转化为大写
+            //toBigChar
             SmallBigChange sctc = new SmallBigChange();
             sql = sctc.toBigchar(sql);
-            //跳转语法解析工具，定位语法类型
+            //into Analysis ,turn on package analysis
             AnalysisUtil au= new AnalysisUtil();
             au.grammarPositon(sql);
+            System.out.println("PR");
         }
     }
 }
