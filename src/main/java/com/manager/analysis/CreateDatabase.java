@@ -1,6 +1,8 @@
 package com.manager.analysis;
 
+import com.manager.data.PrimaryRecord;
 import com.pojo.Database;
+import com.ui.ManinUI;
 import com.util.FileUtil;
 import com.util.TimeUtil;
 import net.sf.json.JSONObject;
@@ -25,26 +27,9 @@ public class CreateDatabase {
         }catch (Exception e){
             System.out.println("参数绑定错误，CREATE DATABASE ( 附近有语法错误; ");
         }
-        //开始写入文件，这里假设路径没有错误，测试路径为F:/BRIEF_DATABASE
-        FileUtil fileUtil = new FileUtil();
-        //创建主数据文件
-        if(fileUtil.createFile(database.getName()+".txt",database.getFilename()))
-            System.out.println("主数据文件 succeed");
-        //创建日志文件
-        if(fileUtil.createFile(database.getName()+"_LOG.txt",database.getFilename()))
-            System.out.println("日志文件 succeed");
-        //查找这个用户是否有这个库 skip skip skip skip skip skip skip skip skip skip skip skip
-        //skip
-        //写入主数据文件信息,讲database pojo对象封装为json
-        JSONObject json = JSONObject.fromObject(database);
-        String w_data = json.toString();
-        System.out.println(w_data);
-        if(fileUtil.writeToFile(w_data,database.getFilename() + "\\" + database.getName()+".txt"))
-            System.out.println("主数据文件 write");
-        //写入日志文件信息
-        String webTime="Database creation time:"+TimeUtil.getNetworkTime();
-        if(fileUtil.writeToFile(webTime,database.getFilename() + "\\" + database.getName()+"_LOG.txt"))
-            System.out.println("日志文件 writed");
+        //开始写入文件，这里假设路径没有错误，测试路径为F:/BRIEFDBMS/database
+        PrimaryRecord primaryRecord = new PrimaryRecord();
+        primaryRecord.writedPrimaryFile(database);
     }
 
     //关键参数定位
@@ -75,7 +60,7 @@ public class CreateDatabase {
                 char temp[] = temp_split.toCharArray();
                     //截取
                     //路径是否正确判断
-                    database.setFilename(temp_split.substring(temp_split.indexOf('=') + 1));
+                    database.setFilename(temp_split.substring(temp_split.indexOf('=') + 1)+"/"+database.getName());
                     System.out.println("filename:" + database.getFilename());
             }
             //size
@@ -94,6 +79,7 @@ public class CreateDatabase {
             }
         }
         //end
+        database.setUser(ManinUI.serveUser.getId());
         //参数完整性检验
         int flag=0;
         if(database.getName()!=null){
@@ -117,5 +103,7 @@ public class CreateDatabase {
             return database;
         return null;
     }
+
+    //相同库判断
 
 }

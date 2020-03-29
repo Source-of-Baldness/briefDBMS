@@ -1,6 +1,7 @@
 package com.util;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class FileUtil {
     //给定文件名和指定路径，创建文件夹和文件,若文件不存在会自动创建，
@@ -24,6 +25,7 @@ public class FileUtil {
         }
         return true;
     }
+
     //给定文件位置和字符串，写入文件，追加写入，在33行增加了换行，每次增加一次会自动换行
     public boolean writeToFile(String conent,String file) throws IOException {
         BufferedWriter out = null;
@@ -45,5 +47,43 @@ public class FileUtil {
         return true;
     }
 
+    //获取一个目录下的所有的文件或文件夹名称
+    public ArrayList<String> getDirName(String path){
+        File dirFile = new File(path);
+        ArrayList<String> databaseNames = new ArrayList<String>();
+        if (dirFile.exists()) {
 
+            File[] files = dirFile.listFiles();
+            if (files != null) {
+                for (File fileChildDir : files) {
+                    //输出文件名或者文件夹名
+                    databaseNames.add(fileChildDir.getName());
+                    System.out.println(fileChildDir.getName());
+                    if (fileChildDir.isDirectory()) {
+                        //System.out.println("");
+                        //通过递归的方式,可以把目录中的所有文件全部遍历出来
+                        //getDirName(fileChildDir.getAbsolutePath());
+                    }
+//                    if (fileChildDir.isFile()) {
+//                        System.out.println(" :  此为文件名");
+//                    }
+                }
+            }
+        }else{
+            System.out.println("你想查找的文件不存在");
+        }
+        return databaseNames;
+    }
+
+//按行读取txt内容
+    public ArrayList<String> readLine(String path) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        String line = null;
+        ArrayList<String> lines =new ArrayList<String>();
+        while ((line = br.readLine()) != null) {
+            lines.add(line);
+        }
+        br.close();
+        return lines;
+    }
 }

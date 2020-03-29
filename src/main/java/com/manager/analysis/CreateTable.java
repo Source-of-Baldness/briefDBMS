@@ -1,5 +1,8 @@
 package com.manager.analysis;
 
+import com.manager.data.PrimaryRecord;
+import com.manager.data.TableRecord;
+import com.manager.data.UserRecord;
 import com.pojo.Primarydata;
 import com.pojo.Table;
 import net.sf.json.JSONObject;
@@ -17,7 +20,6 @@ public class CreateTable {
         System.out.println("二次验证"+result);
         //解析表属性
         parameterSplit(sql);
-
     }
 
     //关键参数定位
@@ -28,8 +30,8 @@ public class CreateTable {
         List<String> datatype = new ArrayList<String>();//数据类型
         List<Boolean> isNull = new ArrayList<Boolean>();//是否为空
         List<Boolean> isPrimary = new ArrayList<Boolean>();//是否为主键
-        List<String> tableName;//表名
-        List<String> tablePath;//表的路径
+        String tableName;//表名
+        String tablePath;//表的路径
 
         //取得列名字符串位置,从（后的第一个字母开始定位至结束
         int attribute_indexOf_begin=sql.indexOf("(");
@@ -37,6 +39,7 @@ public class CreateTable {
         System.out.println(attribute_all);
 
 // begin 开始分离table属性
+
         //二次拆除
         String split_attribute_all[]=attribute_all.split(",");
         for(String one_attribution:split_attribute_all) {
@@ -54,21 +57,43 @@ public class CreateTable {
             isNull.add(isNotNull(split_one_attribution));
             isPrimary.add(isPrimaryKey(split_one_attribution));
         }
-        //封装实体类
+        //定位表名
+        String table_begin_split = sql.substring(0,attribute_indexOf_begin);
+        System.out.println(table_begin_split);
+        String table_end_split[] = table_begin_split.split("\\s+");
+        tableName=table_end_split[2];//定位表名
+        //封装table实体类
         table.setAttribute(attribute);
         table.setDatatype(datatype);
         table.setIsNull(isNull);
         table.setIsPrimary(isPrimary);
+        //获取json对象
         JSONObject json = JSONObject.fromObject(table);
         String table_string = json.toString();
         System.out.println(table_string);
+        //封装主数据文件实体类
+        primarydata.setTableName(tableName);
+        UserRecord userRecord = new UserRecord();
+        primarydata.setTablePath(userRecord.getDatabasePath()+"/TABLE");
+        primarydata.setAlltable(table);
+
         //属性完整性审核
+        PrimaryRecord primaryRecord = new PrimaryRecord();
         if(integrityCheck(table)){
-            System.out.println("有完整的列名支撑");
+            System.out.println("SQL命令成功完成");
             //存入主数据文件
-            //存入表文件
+            if(primaryRecord.tableToPrimary(primarydata)){
+                System.out.println("存入主数据文件成功");
+            }else {
+                System.out.println("存入主数据文件失败");
+            }
+            //基础数据存入表文件
+            TableRecord tableRecord = new TableRecord();
+            //tableRecord.writeBase_Table();
+
+
         }else {
-            System.out.println("创建表失败");
+            System.out.println("CreateTable类在分离参数时发生未知错误");
         }
           return null;
         }
@@ -93,11 +118,22 @@ public class CreateTable {
 
         //列名/属性的完整性检验
         public boolean integrityCheck(Table table){
-            return false;
+        //检测列名是否完整
+            for(String attribute:table.getAttribute()){
+                if(attribute==null || "".equals(attribute) || " ".equals(attribute))
+                    return false;
+            }
+            //检测数据类型是否符合规范
+            for(String datatype:table.getAttribute()){
+                if(datatype.indexOf("INT")==(-1)) {
+                    if (datatype.indexOf("VARCHAR(0)") != (-1))
+                        return false;
+                }
+            }
+            return true;
        }
 
-    //写入主数据文件
 
-    //写入表结构文件
+
 }
 

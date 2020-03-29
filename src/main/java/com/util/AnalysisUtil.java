@@ -18,8 +18,9 @@ public class AnalysisUtil {
         Insert insert = new Insert();
         CreateDatabase createDatabase = new CreateDatabase();
         CreateTable createTable = new CreateTable();
+        SwitchDatabase switchDatabase = new SwitchDatabase();
         //注入正则表达式
-        Pattern p = Pattern.compile("^[\\s]*(INSERT|SELECT|ALTER|DELETE|UPDATE|CREATE DATABASE|CREATE TABLE)[\\s](.|\\n)+$");
+        Pattern p = Pattern.compile("^[\\s]*(INSERT|SELECT|ALTER|DELETE|UPDATE|CREATE DATABASE|CREATE TABLE|SWITCH DATABASE)[\\s](.|\\n)+$");
         Matcher m = p.matcher(sql);
         boolean result = m.matches();
         System.out.println(result);
@@ -43,6 +44,9 @@ public class AnalysisUtil {
                         if(split_sql[(i+1)].equals("TABLE")){
                             createTable.baseAnalysis(sql);
                         }
+                    }
+                    if("SWITCH".equals(split_sql[i])){
+                        switchDatabase.baseAnalysis(sql);
                     }
                 }
                 break;
