@@ -45,7 +45,6 @@ public class ManinUI {
             //into Analysis ,turn on package analysis
             AnalysisUtil au= new AnalysisUtil();
             au.grammarPositon(sql);
-            System.out.println("PR");
         }
     }
 }
