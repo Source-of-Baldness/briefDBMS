@@ -13,7 +13,7 @@ public class UserRecord {
     public Database getUserDatabase() throws IOException {
         FileUtil fileUtil = new FileUtil();
         ArrayList<String> lines =new ArrayList<String>();
-        lines = fileUtil.readLine("F:\\BRIEFDBMS\\account\\"+ ManinUI.serveUser.getId()+".txt");
+        lines = fileUtil.readLine("D:\\BRIEFDBMS\\account\\"+ ManinUI.serveUser.getId()+".txt");
         ManinUI.databaseNames.clear();
         for(String line:lines){
             String[] split_line=line.split("@@");
@@ -27,11 +27,11 @@ public class UserRecord {
     public String getDatabasePath() throws IOException {
         FileUtil fileUtil = new FileUtil();
         ArrayList<String> lines =new ArrayList<String>();
-        lines = fileUtil.readLine("F:\\BRIEFDBMS\\account\\"+ ManinUI.serveUser.getId()+".txt");
+        lines = fileUtil.readLine("D:\\BRIEFDBMS\\account\\"+ ManinUI.serveUser.getId()+".txt");
         ManinUI.databaseNames.clear();
         for(String line:lines){
             String[] split_line=line.split("@@");
-            if(ManinUI.currentDatabase.equals(split_line[2])){
+            if(ManinUI.currentDatabase.getName().equals(split_line[2])){
                 return split_line[1];
             }
         }

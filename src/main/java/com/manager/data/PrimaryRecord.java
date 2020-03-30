@@ -50,7 +50,7 @@ public class PrimaryRecord {
         //转为JSON
         JSONObject json = JSONObject.fromObject(primarydata);
         String w_data = json.toString();
-        if(fileUtil.writeToFile(w_data,primarydata.getTablePath()+"/"+ManinUI.currentDatabase+".txt"))
+        if(fileUtil.writeToFile(w_data,ManinUI.currentDatabase.getFilename()+"/"+ManinUI.currentDatabase.getName()+".txt"))
             return true;
         return false;
     }
