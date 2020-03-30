@@ -31,7 +31,7 @@ public class UserRecord {
         ManinUI.databaseNames.clear();
         for(String line:lines){
             String[] split_line=line.split("@@");
-            if(ManinUI.currentDatabase.equals(split_line[2])){
+            if(ManinUI.currentDatabase.getName().equals(split_line[2])){
                 return split_line[1];
             }
         }

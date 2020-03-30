@@ -42,6 +42,12 @@
             <classifier>jdk15</classifier><!-- 指定jdk版本 -->
         </dependency>
         <!-- Json依赖架包下载 -->
+<!--fast json-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.54</version>
+        </dependency>
 
 
         <!--json end-->

@@ -5,6 +5,7 @@ import com.manager.data.TableRecord;
 import com.manager.data.UserRecord;
 import com.pojo.Primarydata;
 import com.pojo.Table;
+import com.ui.ManinUI;
 import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class CreateTable {
         //封装主数据文件实体类
         primarydata.setTableName(tableName);
         UserRecord userRecord = new UserRecord();
-        primarydata.setTablePath(userRecord.getDatabasePath()+"/TABLE");
+        primarydata.setTablePath(ManinUI.currentDatabase.getFilename()+"/TABLE");
         primarydata.setAlltable(table);
 
         //属性完整性审核
@@ -89,7 +90,12 @@ public class CreateTable {
             }
             //基础数据存入表文件
             TableRecord tableRecord = new TableRecord();
-            //tableRecord.writeBase_Table();
+            if(tableRecord.writeBase_Table(table,primarydata)){
+                System.out.println("存入表文件成功");
+            }else{
+                System.out.println("存入表文件失败");
+            }
+
 
 
         }else {
