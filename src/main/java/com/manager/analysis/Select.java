@@ -20,7 +20,11 @@ public class Select {
         Matcher m=p.matcher(sql);
         result=m.matches();
         System.out.println(result);
-        //2.有筛选条件判断是否含关键字
-
+        //上式为真 继续判断
+        // 2.有筛选条件判断是否含关键字
+        if(result==true)
+        {
+            Pattern p1=Pattern.compile("");
+        }
     }
 }
