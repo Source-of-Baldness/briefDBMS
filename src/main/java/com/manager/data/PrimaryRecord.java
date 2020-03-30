@@ -2,7 +2,6 @@ package com.manager.data;
 
 import com.pojo.Database;
 import com.pojo.Primarydata;
-import com.sun.tools.javac.Main;
 import com.ui.ManinUI;
 import com.util.FileUtil;
 import com.util.TimeUtil;
@@ -35,7 +34,7 @@ public class PrimaryRecord {
         if(fileUtil.writeToFile(webTime,database.getFilename() + "\\" +  database.getName()+"_LOG.txt"))
             flag++;
         //写入用户文件
-        if(fileUtil.writeToFile("SYS_DATABASE_NAME_UNIQUE@@"+database.getFilename()+"@@"+database.getName(),"F:\\BRIEFDBMS\\account\\"+ ManinUI.serveUser.getId() +".txt"))
+        if(fileUtil.writeToFile("SYS_DATABASE_NAME_UNIQUE@@"+database.getFilename()+"@@"+database.getName(),"D:\\BRIEFDBMS\\account\\"+ ManinUI.serveUser.getId() +".txt"))
             flag++;
         if(flag==5){
             System.out.println("命令成功完成。");

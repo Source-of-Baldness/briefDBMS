@@ -1,9 +1,14 @@
 package com.util;
 
+import com.alibaba.fastjson.JSON;
+
 import java.io.*;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FileUtil {
+
     //给定文件名和指定路径，创建文件夹和文件,若文件不存在会自动创建，
     // 如(123.txt,F:\DEMO)
     //会自动在F:\DEMO\ 下创建 123.txt文件
@@ -85,5 +90,18 @@ public class FileUtil {
         }
         br.close();
         return lines;
+    }
+
+    //判断数据库中是否含有一张表
+    public boolean isHaveTheTable(String tableName,String databaseName,String filePath)
+    {
+        //获取目录下所有文件名
+        ArrayList<String> allfile=getDirName(filePath);
+        String allfiletext= JSON.toJSONString(allfile);
+        Pattern p=Pattern.compile(tableName);
+        Matcher m=p.matcher(allfiletext);
+        boolean result;
+        result=m.matches();
+        return  result;
     }
 }
