@@ -66,6 +66,8 @@ public class AnalysisUtil {
     public boolean isHaveTheTable(String tableName,String databaseName,String filePath)
     {
         //获取目录下所有文件名
+        tableName = tableName + ".txt";
+        filePath = filePath+"/TABLE";
         FileUtil fu=new FileUtil();
         ArrayList<String> allfile=fu.getDirName(filePath);
         String allfiletext= JSON.toJSONString(allfile);

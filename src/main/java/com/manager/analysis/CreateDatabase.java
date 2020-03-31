@@ -32,8 +32,6 @@ public class CreateDatabase {
         primaryRecord.writedPrimaryFile(database);
     }
 
-
-
     //关键参数定位
     public Database parameterSplit(String sql) throws Exception{
         Database database = new Database();

@@ -3,6 +3,8 @@ package com.manager.analysis;
 import java.sql.ResultSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.util.AnalysisUtil;
 import com.util.FileUtil;
 import com.ui.ManinUI;
 
@@ -11,7 +13,7 @@ public class Select {
     public void baseAnalysis(String sql){
         System.out.println("二次正则判断");
         //实例化工具类
-        FileUtil fu=new FileUtil();
+        AnalysisUtil fu=new AnalysisUtil();
         boolean result=false;
         //判断输入语句是否符合语法规则
 
