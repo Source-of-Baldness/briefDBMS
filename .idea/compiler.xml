@@ -9,6 +9,6 @@
         <module name="briefDBMS" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="1.5" />
   </component>
 </project>
