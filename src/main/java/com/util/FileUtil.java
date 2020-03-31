@@ -137,7 +137,7 @@ public class FileUtil {
     }
 
     //读取指定行数范围内的数据，按行读取
-    //传入参数filepath精确到文件名 如：（F:/DEMO/123.txt，10，20）从第十行开始读到第20行，包括20行
+    //传入参数filepath精确到文件名 如：（F:/DEMO/123.txt，10，20）从第10行开始读到第20行，包括10行，包括20行
     //返回字符的Array类型，若lineEnd为-1，则读取到文本最后一行如，（F:/DEMO/123.txt，10，-1）
     public ArrayList<String> getlLimitsLineOfTxt(String filePath, int lineBegin, int lineEnd){
         if(lineEnd==(-1)){
@@ -160,7 +160,7 @@ public class FileUtil {
 
                 txt = reader.readLine(); // Read a line of text.
 
-                if(lines_flag <lineEnd && lines_flag>lineBegin){
+                if(lines_flag <lineEnd && lines_flag>=lineBegin){
                     //System.out.println( "txt: " + txt + " lines = " + lines );
                     lines.add(txt);
                 }

@@ -2,6 +2,7 @@ package com.util;
 
 import com.alibaba.fastjson.JSON;
 import com.manager.analysis.*;
+import com.pojo.Database;
 import com.pojo.Primarydata;
 import com.util.FileUtil;
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class AnalysisUtil {
             return false;
     }
 
-    //获取表结构
+    //获取指定表名的表结构
     //传入参数getTableStruct(tableName,ManinUI.currentDatabase.getFilename(),ManinUI.currentDatabase.getName());
     //只需要传入表名，其他两个可以调用全局变量，若想指定其他数据库，则调用全局变量中的databaseNames
     public Primarydata getTableStruct(String tableName,String filePath,String databaseName) throws IOException {
@@ -87,9 +88,13 @@ public class AnalysisUtil {
         filePath = filePath+"/"+databaseName+".txt";
         //按行读取txt内容
         FileUtil fileUtil= new FileUtil();
-        String lines=fileUtil.getCertainLineOfTxt(filePath,2);
-        System.out.println(lines);
-
+        ArrayList<String> lines=fileUtil.getlLimitsLineOfTxt(filePath,2,-1);
+        for(String line:lines){
+            Primarydata primarydata = JSON.parseObject(line, Primarydata.class); //反序列化
+            System.out.println(primarydata.getTableName());
+            if(primarydata.getTableName().equals(tableName))
+                return primarydata;
+        }
         return null;
     }
 }
