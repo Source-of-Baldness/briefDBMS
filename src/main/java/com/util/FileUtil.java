@@ -92,5 +92,99 @@ public class FileUtil {
         return lines;
     }
 
+    // 读取指定某一行的文本
+    //传入参数filepath精确到文件名 如：（F:/DEMO/123.txt，10）从第十行开始读
+    public  String getCertainLineOfTxt(String filePath, int lineNumber){
+        FileReader fr = null;
+        LineNumberReader reader = null;
+        String txt = "";
+
+        try{
+            File file = new File(filePath);
+            fr = new FileReader(file);
+            reader = new LineNumberReader(fr);
+
+            int lines = 0;
+
+            while(txt != null){
+                lines ++;
+
+                txt = reader.readLine(); // Read a line of text.
+
+                if(lines == lineNumber){
+                    //System.out.println( "txt: " + txt + " lines = " + lines );
+                    return txt;
+                }
+            }
+            return txt;
+        }catch(Exception e){
+            e.printStackTrace();
+
+            return txt;
+        }finally{
+            try{
+                reader.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
+            try{
+                fr.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //读取指定行数范围内的数据，按行读取
+    //传入参数filepath精确到文件名 如：（F:/DEMO/123.txt，10，20）从第十行开始读到第20行，包括20行
+    //返回字符的Array类型，若lineEnd为-1，则读取到文本最后一行如，（F:/DEMO/123.txt，10，-1）
+    public ArrayList<String> getlLimitsLineOfTxt(String filePath, int lineBegin, int lineEnd){
+        if(lineEnd==(-1)){
+            lineEnd= Integer.MAX_VALUE;
+        }
+        FileReader fr = null;
+        LineNumberReader reader = null;
+        String txt = "";
+        ArrayList<String> lines =new ArrayList<String>();
+
+        try{
+            File file = new File(filePath);
+            fr = new FileReader(file);
+            reader = new LineNumberReader(fr);
+
+            int lines_flag = 0;
+
+            while(txt != null){
+                lines_flag ++;
+
+                txt = reader.readLine(); // Read a line of text.
+
+                if(lines_flag <lineEnd && lines_flag>lineBegin){
+                    //System.out.println( "txt: " + txt + " lines = " + lines );
+                    lines.add(txt);
+                }
+            }
+            return lines;
+        }catch(Exception e){
+            e.printStackTrace();
+            return lines;
+        }finally{
+            try{
+                reader.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
+            try{
+                fr.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
 
 }

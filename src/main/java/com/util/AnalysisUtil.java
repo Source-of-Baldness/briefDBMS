@@ -2,6 +2,7 @@ package com.util;
 
 import com.alibaba.fastjson.JSON;
 import com.manager.analysis.*;
+import com.pojo.Primarydata;
 import com.util.FileUtil;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class AnalysisUtil {
 
     //判断数据库中是否含有一张表
     //传入的参数 tablename为表名，filename为当前数据库的路径 直接调用全局变量即可传入
-    public boolean isHaveTheTable(String tableName,String databaseName,String filePath)
+    public boolean isHaveTheTable(String tableName,String filePath)
     {
         //获取目录下所有文件名
         tableName = tableName + ".txt";
@@ -76,5 +77,19 @@ public class AnalysisUtil {
         return  true;
         else
             return false;
+    }
+
+    //获取表结构
+    //传入参数getTableStruct(tableName,ManinUI.currentDatabase.getFilename(),ManinUI.currentDatabase.getName());
+    //只需要传入表名，其他两个可以调用全局变量，若想指定其他数据库，则调用全局变量中的databaseNames
+    public Primarydata getTableStruct(String tableName,String filePath,String databaseName) throws IOException {
+        //传入参数封装,定位到主数据文件
+        filePath = filePath+"/"+databaseName+".txt";
+        //按行读取txt内容
+        FileUtil fileUtil= new FileUtil();
+        String lines=fileUtil.getCertainLineOfTxt(filePath,2);
+        System.out.println(lines);
+
+        return null;
     }
 }
