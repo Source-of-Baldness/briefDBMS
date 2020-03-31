@@ -3,14 +3,10 @@ package com.manager.analysis;
 import com.alibaba.fastjson.JSON;
 import com.manager.data.UserRecord;
 import com.pojo.Database;
-import com.pojo.Table;
 import com.ui.ManinUI;
 import com.util.FileUtil;
-
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -7,7 +7,6 @@ import com.pojo.Primarydata;
 import com.pojo.Table;
 import com.ui.ManinUI;
 import net.sf.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,6 +18,9 @@ public class CreateTable {
         Matcher m = p.matcher(sql);
         boolean result = m.matches();
         System.out.println("二次验证"+result);
+        if(!result){
+            return;
+        }
         //解析表属性
         parameterSplit(sql);
     }

@@ -60,7 +60,7 @@ public class TableRecord {
         long sumWorkspace = 0;
         //记录空间分配大小计算
         //1.解析table数据类型
-        sumWorkspace=calculateDatatype(table)+sumWorkspace;
+        sumWorkspace=calculateDatatype(table)+sumWorkspace+2;//+2为换行符
         //格式信息大小 109字节
 
         //计算记录分配表与记录空间持有的大小 1Mb=1048576字节
@@ -80,6 +80,7 @@ public class TableRecord {
         //解析数据类型 暂时判断 INT与VARCHAR
         int sumDatatype = 0;
         int flag_num = 0;
+        //计算@分割的大小
         for(String datatype:table.getDatatype()){
             flag_num++;
         //整型 MAX 2147483647
@@ -102,7 +103,7 @@ public class TableRecord {
             out.write("SYS_TITLE_RECORD_BEGIN\r\n");
             for(int i=0;i<dataLines;i++)
                 out.write("0");
-            out.write("SYS_TITLE_RECORD_END\r\n");
+            out.write("\r\nSYS_TITLE_RECORD_END\r\n");
             out.write("SYS_TITLE_DATA_BEGIN\r\n");
             for(int i=0;i<dataLines;i++){
                 out.write(flaSpace+"\r\n");
@@ -118,5 +119,4 @@ public class TableRecord {
             }
         }
     }
-
 }
