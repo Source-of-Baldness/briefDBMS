@@ -92,74 +92,99 @@ public class FileUtil {
         return lines;
     }
 
-    //查找txt中的数据内容信息 path为全局变量的路径加上\table\表名.txt
-    public ArrayList<String> getAllDataInfo(String path) throws IOException {
-            FileReader fr = new FileReader(path);
-            BufferedReader br = new BufferedReader(fr);
-            ArrayList<String> arrayList = new ArrayList<String>();//存放读取的数据
-            String temp = "",temp1="";// 用于临时保存每次读取的内容
+    // 读取指定某一行的文本
+    //传入参数filepath精确到文件名 如：（F:/DEMO/123.txt，10）获取第十行内容
+    public  String getCertainLineOfTxt(String filePath, int lineNumber){
+        FileReader fr = null;
+        LineNumberReader reader = null;
+        String txt = "";
 
-            while (temp != null && br.readLine()!=null)
-            {
-                temp = br.readLine();
-                boolean result = false;
-                //先判断SYS_First和SYS_END是否为0 为真表中无数据直接返回空
-                if (temp != null && temp.contains("SYS_First")) {
-                    System.out.println("第一次匹配" + temp);
-                    Pattern p = Pattern.compile("^[\\s]*SYS_First@@0$");
-                    Matcher m = p.matcher(temp);
-                    result = m.matches();
-                    if (result)//上式为真 继续匹配下一行
-                    {
-                        while (temp != null) {
-                            result = false;//重置标识符
-                            temp = br.readLine();
-                            System.out.println("第二次匹配" + temp);
-                            p = Pattern.compile("^[\\s]*SYS_End@@0$");
-                            m = p.matcher(temp);
-                            result = m.matches();
-                            if (result)
-                                return arrayList;//上两个字段均为0表中数据为空 直接返回空数组
-                            else {
-                                System.out.println("表文件出错！");
-                                System.exit(-1);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        while(temp!=null)
-                        {
-                            result=false;
-                            temp1=temp;
-                            temp = br.readLine();
-                            System.out.println("第二次匹配temp1=" + temp1+",temp="+temp);
+        try{
+            File file = new File(filePath);
+            fr = new FileReader(file);
+            reader = new LineNumberReader(fr);
 
-                            //判断first和end的数字是否相等 相等为空表返回空数组
-                            System.out.println("非零表匹配正则"+"^[\\s]*"+temp1+"$");
-                                p = Pattern.compile("^[\\s]*"+temp1+"$");
-                            m = p.matcher(temp);
-                            result = m.matches();
-                            if(result)
-                            {
-                                //读取行数 count移动BufferedReader用
-                                int line=temp1.charAt(temp1.length()-1),count=0;
-                                System.out.println("行数"+line);
-                                //定位到SYS_TITLE_DATA_BEGIN读取数据
-                                if (temp!=null && temp.contains("SYS_TITLE_DATA_BEGIN"))
-                                {
-                                    result=false;
-                                    temp=br.readLine();
-                                    if(temp!=null && count!=line)
-                                    {
-                                        temp=br.readLine();
-                                    }
-                                }
-                            }
-                        }
-                    }
+            int lines = 0;
+
+            while(txt != null){
+                lines ++;
+
+                txt = reader.readLine(); // Read a line of text.
+
+                if(lines == lineNumber){
+                    //System.out.println( "txt: " + txt + " lines = " + lines );
+                    return txt;
                 }
             }
-            return arrayList;
+            return txt;
+        }catch(Exception e){
+            e.printStackTrace();
+
+            return txt;
+        }finally{
+            try{
+                reader.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
+            try{
+                fr.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
     }
+
+    //读取指定行数范围内的数据，按行读取
+    //传入参数filepath精确到文件名 如：（F:/DEMO/123.txt，10，20）从第10行开始读到第20行，包括10行，包括20行
+    //返回字符的Array类型，若lineEnd为-1，则读取到文本最后一行如，（F:/DEMO/123.txt，10，-1）
+    public ArrayList<String> getlLimitsLineOfTxt(String filePath, int lineBegin, int lineEnd){
+        if(lineEnd==(-1)){
+            lineEnd= Integer.MAX_VALUE;
+        }
+        FileReader fr = null;
+        LineNumberReader reader = null;
+        String txt = "";
+        ArrayList<String> lines =new ArrayList<String>();
+
+        try{
+            File file = new File(filePath);
+            fr = new FileReader(file);
+            reader = new LineNumberReader(fr);
+
+            int lines_flag = 0;
+
+            while(txt != null){
+                lines_flag ++;
+
+                txt = reader.readLine(); // Read a line of text.
+
+                if(lines_flag <lineEnd && lines_flag>=lineBegin){
+                    //System.out.println( "txt: " + txt + " lines = " + lines );
+                    lines.add(txt);
+                }
+            }
+            return lines;
+        }catch(Exception e){
+            e.printStackTrace();
+            return lines;
+        }finally{
+            try{
+                reader.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
+            try{
+                fr.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
 }
