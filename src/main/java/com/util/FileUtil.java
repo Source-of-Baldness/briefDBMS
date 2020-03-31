@@ -92,12 +92,12 @@ public class FileUtil {
         return lines;
     }
 
-    //查找txt中的数据内容信息
+    //查找txt中的数据内容信息 path为全局变量的路径加上\table\表名.txt
     public ArrayList<String> getAllDataInfo(String path) throws IOException {
             FileReader fr = new FileReader(path);
             BufferedReader br = new BufferedReader(fr);
             ArrayList<String> arrayList = new ArrayList<String>();//存放读取的数据
-            String temp = "";// 用于临时保存每次读取的内容
+            String temp = "",temp1="";// 用于临时保存每次读取的内容
 
             while (temp != null && br.readLine()!=null)
             {
@@ -119,9 +119,42 @@ public class FileUtil {
                             m = p.matcher(temp);
                             result = m.matches();
                             if (result)
-                                return arrayList;///表中数据为空 直接返回空数组
+                                return arrayList;//上两个字段均为0表中数据为空 直接返回空数组
                             else {
+                                System.out.println("表文件出错！");
+                                System.exit(-1);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        while(temp!=null)
+                        {
+                            result=false;
+                            temp1=temp;
+                            temp = br.readLine();
+                            System.out.println("第二次匹配temp1=" + temp1+",temp="+temp);
 
+                            //判断first和end的数字是否相等 相等为空表返回空数组
+                            System.out.println("非零表匹配正则"+"^[\\s]*"+temp1+"$");
+                                p = Pattern.compile("^[\\s]*"+temp1+"$");
+                            m = p.matcher(temp);
+                            result = m.matches();
+                            if(result)
+                            {
+                                //读取行数 count移动BufferedReader用
+                                int line=temp1.charAt(temp1.length()-1),count=0;
+                                System.out.println("行数"+line);
+                                //定位到SYS_TITLE_DATA_BEGIN读取数据
+                                if (temp!=null && temp.contains("SYS_TITLE_DATA_BEGIN"))
+                                {
+                                    result=false;
+                                    temp=br.readLine();
+                                    if(temp!=null && count!=line)
+                                    {
+                                        temp=br.readLine();
+                                    }
+                                }
                             }
                         }
                     }

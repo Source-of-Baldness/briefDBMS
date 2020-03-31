@@ -24,8 +24,7 @@ public class Select {
         //上式为真 继续判断 判断库中是否含有该表
         String tableName=getSqlTableName(sql);
         String filePath=ManinUI.currentDatabase.getFilename();
-        String databaseName=ManinUI.currentDatabase.getName();
-        boolean tableBoolean=au.isHaveTheTable(tableName,databaseName,filePath);
+        boolean tableBoolean=au.isHaveTheTable(tableName,filePath);
         if(tableBoolean=true)//输入表名正确
         {
             System.out.println("正在查找");
