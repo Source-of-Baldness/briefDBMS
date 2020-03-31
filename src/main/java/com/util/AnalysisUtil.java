@@ -75,4 +75,13 @@ public class AnalysisUtil {
         result=m.matches();
         return  result;
     }
+
+    //读取表中数据 返回全表
+//    public void getAllTableData(String tableName,String filePath)
+//    {
+//        FileUtil fu=new FileUtil();
+//        //拼接完整路径
+//        String file=filePath+"\\TABLE\\"+tableName+"\\.txt";
+//
+//    }
 }

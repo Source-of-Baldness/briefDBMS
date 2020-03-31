@@ -5,13 +5,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.util.FileUtil;
 import com.ui.ManinUI;
+import com.util.AnalysisUtil;
 
 public class Select {
     //传入sql语句，进行解析语法
     public void baseAnalysis(String sql){
         System.out.println("二次正则判断");
         //实例化工具类
-        FileUtil fu=new FileUtil();
+        AnalysisUtil au=new AnalysisUtil();
         boolean result=false;
         //判断输入语句是否符合语法规则
 
@@ -24,7 +25,7 @@ public class Select {
         String tableName=getSqlTableName(sql);
         String filePath=ManinUI.currentDatabase.getFilename();
         String databaseName=ManinUI.currentDatabase.getName();
-        boolean tableBoolean=fu.isHaveTheTable(tableName,databaseName,filePath);
+        boolean tableBoolean=au.isHaveTheTable(tableName,databaseName,filePath);
         if(tableBoolean=true)//输入表名正确
         {
             System.out.println("正在查找");

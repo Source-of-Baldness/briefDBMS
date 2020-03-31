@@ -92,5 +92,41 @@ public class FileUtil {
         return lines;
     }
 
+    //查找txt中的数据内容信息
+    public ArrayList<String> getAllDataInfo(String path) throws IOException {
+            FileReader fr = new FileReader(path);
+            BufferedReader br = new BufferedReader(fr);
+            ArrayList<String> arrayList = new ArrayList<String>();//存放读取的数据
+            String temp = "";// 用于临时保存每次读取的内容
 
+            while (temp != null && br.readLine()!=null)
+            {
+                temp = br.readLine();
+                boolean result = false;
+                //先判断SYS_First和SYS_END是否为0 为真表中无数据直接返回空
+                if (temp != null && temp.contains("SYS_First")) {
+                    System.out.println("第一次匹配" + temp);
+                    Pattern p = Pattern.compile("^[\\s]*SYS_First@@0$");
+                    Matcher m = p.matcher(temp);
+                    result = m.matches();
+                    if (result)//上式为真 继续匹配下一行
+                    {
+                        while (temp != null) {
+                            result = false;//重置标识符
+                            temp = br.readLine();
+                            System.out.println("第二次匹配" + temp);
+                            p = Pattern.compile("^[\\s]*SYS_End@@0$");
+                            m = p.matcher(temp);
+                            result = m.matches();
+                            if (result)
+                                return arrayList;///表中数据为空 直接返回空数组
+                            else {
+
+                            }
+                        }
+                    }
+                }
+            }
+            return arrayList;
+    }
 }
