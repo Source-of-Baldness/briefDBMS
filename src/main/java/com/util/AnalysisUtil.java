@@ -71,10 +71,9 @@ public class AnalysisUtil {
         FileUtil fu=new FileUtil();
         ArrayList<String> allfile=fu.getDirName(filePath);
         String allfiletext= JSON.toJSONString(allfile);
-        Pattern p=Pattern.compile(tableName);
-        Matcher m=p.matcher(allfiletext);
-        boolean result;
-        result=m.matches();
-        return  result;
+        if(allfiletext.indexOf(tableName)!=(-1))
+        return  true;
+        else
+            return false;
     }
 }
