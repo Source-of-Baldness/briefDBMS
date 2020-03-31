@@ -92,16 +92,5 @@ public class FileUtil {
         return lines;
     }
 
-    //判断数据库中是否含有一张表
-    public boolean isHaveTheTable(String tableName,String databaseName,String filePath)
-    {
-        //获取目录下所有文件名
-        ArrayList<String> allfile=getDirName(filePath);
-        String allfiletext= JSON.toJSONString(allfile);
-        Pattern p=Pattern.compile(tableName);
-        Matcher m=p.matcher(allfiletext);
-        boolean result;
-        result=m.matches();
-        return  result;
-    }
+
 }

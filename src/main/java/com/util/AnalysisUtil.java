@@ -1,8 +1,10 @@
 package com.util;
 
+import com.alibaba.fastjson.JSON;
 import com.manager.analysis.*;
-
+import com.util.FileUtil;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,5 +60,19 @@ public class AnalysisUtil {
     //限定符判断，建立限定符库
     public boolean qualifier(String sql){
         return false;
+    }
+
+    //判断数据库中是否含有一张表
+    public boolean isHaveTheTable(String tableName,String databaseName,String filePath)
+    {
+        //获取目录下所有文件名
+        FileUtil fu=new FileUtil();
+        ArrayList<String> allfile=fu.getDirName(filePath);
+        String allfiletext= JSON.toJSONString(allfile);
+        Pattern p=Pattern.compile(tableName);
+        Matcher m=p.matcher(allfiletext);
+        boolean result;
+        result=m.matches();
+        return  result;
     }
 }
