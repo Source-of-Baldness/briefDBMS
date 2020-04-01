@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.apache.commons.lang.CharSetUtils.count;
+
 public class AnalysisUtil {
 
     //语法解析工具，会自动识别增删改查操作，返回到指定的查询管理器类
@@ -70,15 +72,42 @@ public class AnalysisUtil {
     {
         //获取目录下所有文件名
         tableName = tableName + ".txt";
+        tableName=tableName.trim();
         filePath = filePath+"/TABLE";
         FileUtil fu=new FileUtil();
         ArrayList<String> allfile=fu.getDirName(filePath);
         String allfiletext= JSON.toJSONString(allfile);
-        if(allfiletext.indexOf(tableName)!=(-1))
-        return  true;
+        System.out.println(tableName);
+        System.out.println(allfiletext);
+        boolean result=matchStringByRegularExpression(allfiletext,tableName);
+        if(result)
+            return  true;
         else
             return false;
     }
+
+    //parent为从文件获取的文件名 child为输入的表名
+    private boolean matchStringByRegularExpression( String parent,String child )
+    {
+        String father="";
+        char temp = 0;
+        for(int i=0;i<parent.length();i++)
+                {
+                    temp=parent.charAt(i);
+                    if(temp!='[' )
+                    {
+                        if(temp!='"' )
+                            if(temp!=']')
+                        father+=temp;
+            }
+            
+        }
+        if(father.equals(child))
+            return true;
+        else
+            return false;
+    }
+
 
     //获取指定表名的表结构
     //传入参数getTableStruct(tableName,ManinUI.currentDatabase.getFilename(),ManinUI.currentDatabase.getName());

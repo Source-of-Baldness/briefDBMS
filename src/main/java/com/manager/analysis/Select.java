@@ -1,6 +1,8 @@
 package com.manager.analysis;
 
+import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.util.FileUtil;
@@ -9,10 +11,11 @@ import com.util.AnalysisUtil;
 
 public class Select {
     //传入sql语句，进行解析语法
-    public void baseAnalysis(String sql){
+    public void baseAnalysis(String sql) throws IOException {
         System.out.println("二次正则判断");
         //实例化工具类
         AnalysisUtil au=new AnalysisUtil();
+        FileUtil fu=new FileUtil();
         boolean result=false;
         //判断输入语句是否符合语法规则
 
@@ -23,12 +26,26 @@ public class Select {
         System.out.println(result);
         //上式为真 继续判断 判断库中是否含有该表
         String tableName=getSqlTableName(sql);
+        tableName=tableName.trim();
         String filePath=ManinUI.currentDatabase.getFilename();
+        filePath=filePath.trim();
         boolean tableBoolean=au.isHaveTheTable(tableName,filePath);
-        if(tableBoolean=true)//输入表名正确
+        if(tableBoolean==true)//输入表名正确
         {
+            result=false;//重置判断标志
             System.out.println("正在查找");
-
+            //判断查找的类型 全表？有无限定词？等
+            //1.无限定条件查找全表
+            p=Pattern.compile("[\\s]*SELECT[\\s]+(\\*)[\\s]+(FROM)[\\s]+[A-Z](\\w)*");
+            m=p.matcher(sql);
+            result=m.matches();
+            if(result)
+            {
+                //直接读取全表数据
+                ArrayList<String> data=fu.selectAllData(tableName,filePath);
+                System.out.println("-----下面是找到的数据-----");
+                    System.out.println(data);
+            }
         }
         else
         {
@@ -61,6 +78,5 @@ public class Select {
         }
         return tableName;
     }
-
 
 }

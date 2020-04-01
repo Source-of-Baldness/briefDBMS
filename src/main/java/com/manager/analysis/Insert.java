@@ -30,7 +30,7 @@ public class Insert {
         System.out.println("插入的表名:"+tableName);
         //判断数据库中是否存在该表
         AnalysisUtil analysisUtil = new AnalysisUtil();
-        boolean isTableResult = analysisUtil.isHaveTheTable(tableName, ManinUI.currentDatabase.getName(),ManinUI.currentDatabase.getFilename());
+        boolean isTableResult = analysisUtil.isHaveTheTable(tableName,ManinUI.currentDatabase.getFilename());
         if(isTableResult){
             System.out.printf("该表存在");
         }else{
