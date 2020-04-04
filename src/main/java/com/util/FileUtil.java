@@ -3,7 +3,10 @@ package com.util;
 import com.alibaba.fastjson.JSON;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -183,5 +186,78 @@ public class FileUtil {
             }
         }
     }
+
+    //指定文本位置读取表格数据至指定文本信息处
+    //该方法与范围查找方法类似，详见上个方法，设定开始范围
+    //例如从 SYS_TITLE_RECORD_BEGIN 处 查找至 SYS_TITLE_RECORD_END处
+    public ArrayList<String> getlContentLineOfTxt(String filePath, String lineBeginContent, String lineEndContent){
+        FileReader fr = null;
+        LineNumberReader reader = null;
+        String txt = "";
+        ArrayList<String> lines =new ArrayList<String>();
+
+        try{
+            File file = new File(filePath);
+            fr = new FileReader(file);
+            reader = new LineNumberReader(fr);
+
+            int lines_flag = 0;
+            int line_begin_flag=0;
+
+            while(txt != null ){
+                txt = reader.readLine(); // Read a line of text.
+
+                if(lineEndContent.contains(txt))
+                    return lines;
+                lines_flag ++;
+
+                if(line_begin_flag>=1){
+                    //System.out.println( "txt: " + txt + " lines = " + lines );
+                    lines.add(txt);
+                }
+
+                if(lineBeginContent.contains(txt)){
+                    line_begin_flag ++;
+                }
+
+            }
+            return lines;
+        }catch(Exception e){
+            e.printStackTrace();
+            return lines;
+        }finally{
+            try{
+                reader.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
+            try{
+                fr.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //指定位置实现文本替换
+    public boolean replaceLineOfTxt(String filePath,int line_index,String replaceContent) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(filePath));
+        List<String> replaced = new ArrayList<>();
+        int lines_flag = 1;
+
+        for (String line : lines) {
+            if (lines_flag == line_index) {
+                replaced.add(replaceContent);
+            } else {
+                replaced.add(line);
+            }
+            lines_flag++;
+        }
+        Files.write(Paths.get(filePath), replaced);
+        return true;
+    }
+
+
 
 }
