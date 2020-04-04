@@ -184,48 +184,4 @@ public class FileUtil {
         }
     }
 
-    //查找表中的所有数据（不含条件符） 参数一待查找的表名 filePath全局变量中的当前数据库位置
-    public ArrayList<String> selectAllData(String tableName,String filePath) throws IOException {
-        //补全路径
-        filePath+="\\TABLE\\"+tableName+".txt";
-        filePath=filePath.trim();
-        System.out.println(filePath);
-        BufferedReader br = new BufferedReader(new FileReader(filePath));
-        String data = null;
-        ArrayList<String> datas =new ArrayList<String>();
-        boolean result=false;//正则判断符
-        String temp1,temp2;//存放临时读到的需要判断的字符串
-        int flag=0;
-        while ((data = br.readLine()) != null) {
-            while(flag==0)//第一次读文件 读取文件尾标记
-            {
-            Pattern p=Pattern.compile("^[\\s]*SYS_First@@0[\\s]*$");
-            Matcher m=p.matcher(data);
-            result=m.matches();
-            temp1=data;//存放First数据
-            if(result)
-            {
-                //继续往下匹配
-                if((data=br.readLine())!=null)
-                {
-                    result=false;//重置
-                    p=Pattern.compile("^[\\s]*SYS_End@@0[\\s]*$");
-                    m=p.matcher(data);
-                    result=m.matches();
-                    if(result)
-                        return datas;//表中无数据 直接返回空数组
-                    else
-                        return datas;
-                }
-            }
-            else
-            {
-                data=br.readLine();
-            }
-        }
-        }
-        br.close();
-        return datas;
-    }
-
 }

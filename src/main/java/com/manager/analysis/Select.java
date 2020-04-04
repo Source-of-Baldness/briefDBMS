@@ -1,5 +1,7 @@
 package com.manager.analysis;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -8,6 +10,9 @@ import java.util.regex.Pattern;
 import com.util.FileUtil;
 import com.ui.ManinUI;
 import com.util.AnalysisUtil;
+
+import static java.lang.System.exit;
+import static java.lang.System.setOut;
 
 public class Select {
     //传入sql语句，进行解析语法
@@ -28,7 +33,7 @@ public class Select {
         String tableName=getSqlTableName(sql);
         tableName=tableName.trim();
         String filePath=ManinUI.currentDatabase.getFilename();
-        filePath=filePath.trim();
+        //filePath=filePath.trim();
         boolean tableBoolean=au.isHaveTheTable(tableName,filePath);
         if(tableBoolean==true)//输入表名正确
         {
@@ -42,7 +47,7 @@ public class Select {
             if(result)
             {
                 //直接读取全表数据
-                ArrayList<String> data=fu.selectAllData(tableName,filePath);
+                ArrayList<String> data=selectAllData(tableName,filePath);
                 System.out.println("-----下面是找到的数据-----");
                     System.out.println(data);
             }
@@ -77,6 +82,131 @@ public class Select {
             //System.out.println(t);
         }
         return tableName;
+    }
+
+    //查找表中的所有数据（不含条件符） 参数一待查找的表名 filePath全局变量中的当前数据库位置
+    public ArrayList<String> selectAllData(String tableName,String filePath) throws IOException {
+
+        //补全路径
+        filePath+="\\TABLE\\"+tableName+".txt";
+        filePath=filePath.trim();
+        System.out.println(filePath);
+        BufferedReader br = new BufferedReader(new FileReader(filePath));
+        String data = null;
+        ArrayList<String> datas =new ArrayList<String>();
+        boolean result=false;//正则判断符
+        String temp1,temp2;//存放临时读到的需要判断的成对的文件标识字符串
+        int flag=0;//判断匹配的语句位置 避免一个正则多次判断
+        Pattern p;
+        Matcher m;
+
+        while ((data = br.readLine()) != null)
+        {
+            p=Pattern.compile("^[\\s]*SYS_First@@[\\d]+[\\s]*$");
+            m=p.matcher(data);
+            result=m.matches();
+            if(result){
+                p=Pattern.compile("^[\\s]*SYS_First@@0[\\s]*$");
+                m=p.matcher(data);
+                result=m.matches();
+                temp1=data;//存放First数据
+                System.out.println("here");
+                if(result)
+                {
+                    System.out.println("first=0");
+                    //继续往下匹配
+                    if((data=br.readLine())!=null)
+                    {
+                        result=false;//重置
+                        p=Pattern.compile("^[\\s]*SYS_End@@0[\\s]*$");
+                        m=p.matcher(data);
+                        result=m.matches();
+                        System.out.println("end=0");
+                        if(result)
+                            return datas;//表中无数据 直接返回空数组
+                        else
+                            return null;//错误的文件数据 返回空数组
+                    }
+                }
+                else//first不等于0 表中有数据
+                {
+                    System.out.println("first!=0");
+                    temp2=data=br.readLine();
+                   System.out.println("temp2"+temp2);
+                    System.out.println("temp1"+temp1);
+                    while((data=br.readLine())!=null)
+                    {
+                        p=Pattern.compile("^[\\s]*SYS_TITLE_DATA_BEGIN[\\s]*$");
+                        result=false;//重置
+//                        p=Pattern.compile("^[\\s]*SYS_First@@[1-9]+[\\s]*$");
+                        m=p.matcher(data);
+                        result=m.matches();
+                        if(result)
+                        {
+                            //判断First和Ended是否相等 相等 数据表中仅有一条数据 直接定位
+                            String num1="",temp1_num1="",temp2_num2="";//两个变量用于存储数据行位置
+                            int num,temp1_num,temp2_num;//num标记数据位 temp1_num存储temp1 first数据位 2 end数据位
+
+                            int i=temp2.lastIndexOf("@");
+                            System.out.println("i="+i);
+                            exit(-1);
+                            for(int s=i+2;s<temp2.length();s++)
+                            {
+                                num1+=temp2.charAt(s);
+                                System.out.println(num1);
+                            }
+                            System.out.println(num1);
+                            num=Integer.parseInt(num1);
+                            temp2_num=num;
+
+                            i=temp1.lastIndexOf("@");
+                            System.out.println("i="+i);
+                            for(int s=i+2;s<temp1.length();s++)
+                            {
+                                temp1_num1+=temp1.charAt(s);
+                            }
+                            temp1_num=Integer.parseInt(temp1_num1);
+
+                            System.out.println("temp1_num"+temp1_num);
+                            System.out.println("temp2_num"+temp2_num);
+
+                            if(temp1.equals(temp2))
+                            {
+                                System.out.println("比较成功");
+
+                                while((data=br.readLine())=="SYS_TITLE_DATA_BEGIN"){
+                                    //添加一个计数器 用于读取br移动次数
+                                    int count=0;
+                                    while((data=br.readLine())!=null && count!=num)
+                                    {
+                                        count++;
+                                        br.readLine();
+
+                                    }
+                                    System.out.println("循环"+data);
+                                    data=br.readLine();
+                                    System.out.println("下一行"+data);
+                                    //替换data中存在的ffff标识符
+                                    p=Pattern.compile(",(f)+");
+                                    m=p.matcher(data);
+                                    String data1=m.replaceAll("");
+                                    System.out.println("替换后"+data1);
+                                    System.out.println("替换前"+data);
+                                    datas.add(data1);
+                                    return datas;
+                                }
+                        }
+
+
+                        }
+                    }
+
+            }
+
+                }
+            }
+        br.close();
+        return datas;
     }
 
 }
