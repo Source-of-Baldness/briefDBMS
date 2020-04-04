@@ -104,9 +104,6 @@ public class Insert {
     public boolean restrainJudge(Primarydata primarydata){
         Table table = new Table();
         table = primarydata.getAlltable();
-
-
-
         for(int i = 0;i<table.getAttribute().size();i++){
             //输入参数的类型判断
             String dataType = inputDatatype(table.getContent().get(i));
@@ -153,6 +150,8 @@ public class Insert {
                 }
             }
         //主键判断是否重复
+
+
         }
         return true;
 

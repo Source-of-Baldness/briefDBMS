@@ -53,6 +53,13 @@ public class CreateDatabase {
                     //截取
                     database.setName(temp_split.substring(temp_split.indexOf('=') + 1));
                     System.out.println("name:" + database.getName());
+                    //建立相同库的判断
+                    for(String databaseName:ManinUI.databaseNames){
+                        if(database.getName().equals(databaseName)){
+                            System.out.println("数据库建立失败，已经存在 '"+database.getName()+"' 数据库。");
+                            return null;
+                        }
+                    }
                 }
             }
             //filename

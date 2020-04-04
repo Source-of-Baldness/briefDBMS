@@ -6,6 +6,7 @@ import com.manager.data.UserRecord;
 import com.pojo.Primarydata;
 import com.pojo.Table;
 import com.ui.ManinUI;
+import com.util.AnalysisUtil;
 import net.sf.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,14 +58,29 @@ public class CreateTable {
                 datatype.add(split_one_attribution[1]);
             }
             //接 NOT NULL OR PRIMARY解析
-            isNull.add(isNotNull(split_one_attribution));
             isPrimary.add(isPrimaryKey(split_one_attribution));
+            //若为PRIMARY时，自动添加NOT NULL约束
+            if(isPrimaryKey(split_one_attribution)){
+                isNull.add(true);
+            }else{
+                isNull.add(isNotNull(split_one_attribution));
+            }
+
         }
         //定位表名
         String table_begin_split = sql.substring(0,attribute_indexOf_begin);
         System.out.println(table_begin_split);
         String table_end_split[] = table_begin_split.split("\\s+");
         tableName=table_end_split[2];//定位表名
+        //判断表是否重复
+        AnalysisUtil analysisUtil = new AnalysisUtil();
+        if(!analysisUtil.isHaveTheTable(tableName,ManinUI.currentDatabase.getFilename())){
+            System.out.println("表 '"+tableName+"' 准备就绪。");
+        }else{
+            System.out.println("当前数据库 '"+ManinUI.currentDatabase.getName()+"' 已存在 表 '"+tableName+"' 创建表结构失败。");
+            return null;
+        }
+
         //封装table实体类
         table.setAttribute(attribute);
         table.setDatatype(datatype);
@@ -89,6 +105,7 @@ public class CreateTable {
                 System.out.println("存入主数据文件成功");
             }else {
                 System.out.println("存入主数据文件失败");
+                return null;
             }
             //基础数据存入表文件
             TableRecord tableRecord = new TableRecord();
@@ -96,12 +113,14 @@ public class CreateTable {
                 System.out.println("存入表文件成功");
             }else{
                 System.out.println("存入表文件失败");
+                return null;
             }
 
 
 
         }else {
             System.out.println("CreateTable类在分离参数时发生未知错误");
+            return null;
         }
           return null;
         }
@@ -126,7 +145,7 @@ public class CreateTable {
 
         //列名/属性的完整性检验
         public boolean integrityCheck(Table table){
-        //检测列名是否完整
+            //检测列名是否完整
             for(String attribute:table.getAttribute()){
                 if(attribute==null || "".equals(attribute) || " ".equals(attribute))
                     return false;
@@ -140,6 +159,7 @@ public class CreateTable {
             }
             return true;
        }
+
 
 
 

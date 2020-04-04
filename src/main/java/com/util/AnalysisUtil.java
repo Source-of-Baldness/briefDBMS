@@ -65,7 +65,7 @@ public class AnalysisUtil {
     }
 
     //判断数据库中是否含有一张表
-    //传入的参数 tablename为表名，filename为当前数据库的路径 直接调用全局变量即可传入
+    //传入的参数 tableName为表名，filePath为当前数据库的路径 直接调用全局变量即可传入
     public boolean isHaveTheTable(String tableName,String filePath)
     {
         //获取目录下所有文件名
@@ -75,7 +75,7 @@ public class AnalysisUtil {
         ArrayList<String> allfile=fu.getDirName(filePath);
         String allfiletext= JSON.toJSONString(allfile);
         if(allfiletext.indexOf(tableName)!=(-1))
-        return  true;
+            return true;
         else
             return false;
     }
