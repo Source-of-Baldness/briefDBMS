@@ -1,15 +1,11 @@
 package com.manager.analysis;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.alibaba.fastjson.JSON;
 import com.pojo.Primarydata;
 import com.pojo.Table;
 import com.util.FileUtil;
@@ -17,8 +13,7 @@ import com.ui.ManinUI;
 import com.util.AnalysisUtil;
 import net.sf.json.JSONObject;
 
-import static java.lang.System.exit;
-import static java.lang.System.setOut;
+
 
 public class Select {
     //传入sql语句，进行解析语法
@@ -53,9 +48,9 @@ public class Select {
             if(result)
             {
                 //直接读取全表数据
-                ArrayList<String> data=selectAllData(tableName,filePath);
-                System.out.println("-----下面是找到的数据-----");
-                    System.out.println(data);
+                selectAllData(tableName,filePath);
+               // System.out.println("-----下面是找到的数据-----");
+                    //System.out.println(data);
             }
         }
         else
@@ -91,12 +86,11 @@ public class Select {
     }
 
     //查找表中的所有数据（不含条件符） 参数一待查找的表名 filePath全局变量中的当前数据库位置
-    public ArrayList<String> selectAllData(String tableName,String filePath) throws IOException {
+    public void selectAllData(String tableName,String filePath) throws IOException {
         FileUtil fileUtil= new FileUtil();
         AnalysisUtil analysisUtil = new AnalysisUtil();
-        Primarydata primarydata;
+        Primarydata primarydata = new Primarydata();
         int selctline=0;
-
         ArrayList<String> lines = new ArrayList<String>();
         lines = fileUtil.getlContentLineOfTxt(filePath+"/TABLE/"+tableName+".txt","SYS_TITLE_RECORD_BEGIN","SYS_TITLE_RECORD_END");
         for(String line:lines){
@@ -112,9 +106,8 @@ public class Select {
                         System.out.println(sss);
                     }
                     for(int j=0;j<primarydata.getAlltable().getAttribute().size();j++){
-                        Table table = new Table();
-                        table = primarydata.getAlltable();
-                        table.setContent(si);
+
+                        primarydata.getAlltable().getContent().add("1");
                     }
                     JSONObject json = JSONObject.fromObject(primarydata);
                     String str22 = json.toString();
@@ -127,9 +120,6 @@ public class Select {
             }
         }
         // 开始读取数据
-
-
-    return null;
 
 //        //补全路径
 //        filePath+="\\TABLE\\"+tableName+".txt";

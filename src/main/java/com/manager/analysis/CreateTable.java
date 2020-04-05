@@ -34,6 +34,7 @@ public class CreateTable {
         List<String> datatype = new ArrayList<String>();//数据类型
         List<Boolean> isNull = new ArrayList<Boolean>();//是否为空
         List<Boolean> isPrimary = new ArrayList<Boolean>();//是否为主键
+        List<String> content = new ArrayList<String>();//表内容
         String tableName;//表名
         String tablePath;//表的路径
 
@@ -65,7 +66,8 @@ public class CreateTable {
             }else{
                 isNull.add(isNotNull(split_one_attribution));
             }
-
+            //为content开辟空间
+            content.add("");
         }
         //定位表名
         String table_begin_split = sql.substring(0,attribute_indexOf_begin);
@@ -86,6 +88,7 @@ public class CreateTable {
         table.setDatatype(datatype);
         table.setIsNull(isNull);
         table.setIsPrimary(isPrimary);
+        table.setContent(content);
         //获取json对象
         JSONObject json = JSONObject.fromObject(table);
         String table_string = json.toString();
