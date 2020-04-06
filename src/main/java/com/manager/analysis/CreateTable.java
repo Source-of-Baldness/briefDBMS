@@ -118,6 +118,13 @@ public class CreateTable {
                 System.out.println("存入表文件失败");
                 return null;
             }
+            //主键信息存入表文件
+            if(tableRecord.primaryKey_record(primarydata)){
+                System.out.println("主键信息创建成功");
+            }else{
+                System.out.println("主键信息创建失败");
+                return null;
+            }
 
 
 

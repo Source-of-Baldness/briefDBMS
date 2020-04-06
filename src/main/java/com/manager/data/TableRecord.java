@@ -6,6 +6,7 @@ import com.ui.ManinUI;
 import com.util.FileUtil;
 import org.apache.commons.lang.StringUtils;
 
+import javax.swing.*;
 import javax.swing.text.TabExpander;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -184,5 +185,78 @@ public class TableRecord {
 
 
         return false;
+    }
+
+    //写入主键头部信息，SYS_TABLE_PRIMARY_KEY_INFO
+    public boolean primaryKey_record(Primarydata primarydata) throws IOException {
+        Table table = new Table();
+        table = primarydata.getAlltable();
+        //新建文件SYS_TABLE_PRIMARY_KEY_INFO
+        FileUtil fileUtil = new FileUtil();
+        fileUtil.createFile(primarydata.getTableName()+".txt",ManinUI.currentDatabase.getFilename()+"/SYS_TABLE_PRIMARY_KEY_INFO");
+        //封装主键属性
+        ArrayList<String> primaryKey_Attribute = new ArrayList<String>();
+        for(Boolean primaryKey:table.getIsPrimary()){
+            //如果为真，则将主键属性封装进ArrayList中
+            int primary_flag = 0;
+            if(primaryKey){
+                primaryKey_Attribute.add(table.getAttribute().get(primary_flag));
+                primary_flag++;
+            }
+        }
+        String primaryMerge = StringUtils.join(primaryKey_Attribute,",");
+        //写入基本信息
+        if(fileUtil.writeToFile(primaryMerge,ManinUI.currentDatabase.getFilename()+"/SYS_TABLE_PRIMARY_KEY_INFO/"+primarydata.getTableName()+".txt")){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean primaryKey_record_data(Primarydata primarydata) throws IOException {
+        Table table = new Table();
+        table = primarydata.getAlltable();
+        //封装主键属性的content
+        ArrayList<String> primaryKey_content = new ArrayList<String>();
+        int primary_flag = 0;
+        for(Boolean primaryKey:table.getIsPrimary()){
+            //如果为真，则将主键属性的content封装进ArrayList中
+            if(primaryKey){
+                primaryKey_content.add(table.getContent().get(primary_flag));
+                primary_flag++;
+            }
+        }
+        String primaryMerge = StringUtils.join(primaryKey_content,",");
+        //写入基本信息
+        FileUtil fileUtil = new FileUtil();
+        if(fileUtil.writeToFile(primaryMerge,ManinUI.currentDatabase.getFilename()+"/SYS_TABLE_PRIMARY_KEY_INFO/"+primarydata.getTableName()+".txt")){
+            System.out.println("主键信息写入完成。");
+            return true;
+        }
+        return false;
+    }
+
+    //更新表索引
+    public boolean updata_table_index(Primarydata primarydata) throws IOException {
+        FileUtil fileUtil = new FileUtil();
+        int first_index = 0;
+        int end_index = 0;
+        int flag_index = 0;
+        ArrayList<String> records = new ArrayList<String>();
+        records = fileUtil.getlContentLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt","SYS_TITLE_RECORD_BEGIN","SYS_TITLE_RECORD_END");
+        String record = records.get(0);
+        first_index = record.indexOf("1")+1;
+        //end_index = first_index;
+        while(end_index !=(-1)){
+            end_index = record.indexOf("1",(end_index+1));
+            if(end_index!=(-1))
+                flag_index = end_index;
+        }
+        end_index = flag_index+1;
+        System.out.println("更新记录空间索引位置");
+        System.out.println("first:"+first_index);
+        System.out.println("end:"+end_index);
+        fileUtil.replaceLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",5,"SYS_First@@"+first_index);
+        fileUtil.replaceLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",6,"SYS_End@@"+end_index);
+        return true;
     }
 }

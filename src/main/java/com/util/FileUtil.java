@@ -163,8 +163,7 @@ public class FileUtil {
 
                 txt = reader.readLine(); // Read a line of text.
 
-                if(lines_flag <lineEnd && lines_flag>=lineBegin){
-                    //System.out.println( "txt: " + txt + " lines = " + lines );
+                if(lines_flag <lineEnd && lines_flag>=lineBegin && txt!=null){
                     lines.add(txt);
                 }
             }
