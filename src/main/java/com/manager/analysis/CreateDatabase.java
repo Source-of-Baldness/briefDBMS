@@ -14,7 +14,7 @@ public class CreateDatabase {
     public void baseAnalysis(String sql) throws IOException {
         Database database = new Database();
         //二次验证
-        Pattern p = Pattern.compile("^[\\s]*CREATE[\\s]+DATABASE[\\s]+([A-Z][A-Z]*)([\\s]+)?\\(([\\s]+)?([\\s]*(NAME=|FILENAME=|SIZE=|MAXSIZE=|FILEGROWTH=)(.*),)*[\\s]*\\)[\\s]*$");
+        Pattern p = Pattern.compile("^[\\s]*CREATE[\\s]+DATABASE[\\s]+([A-Z][A-Z]*)([\\s]+)?\\(([\\s]+)?([\\s]*(NAME=|FILENAME=|SIZE=|MAXSIZE=|FILEGROWTH=)(.*),*)*[\\s]*\\)[\\s]*$");
         Matcher m = p.matcher(sql);
         boolean result = m.matches();
         System.out.println("二次验证"+result);
