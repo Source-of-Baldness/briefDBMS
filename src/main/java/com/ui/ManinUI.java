@@ -18,13 +18,21 @@ public class ManinUI {
     public static User serveUser = new User();
     public static Database currentDatabase = new Database();//默认master数据库
     public static ArrayList<String> databaseNames = new ArrayList<String>();//当前用户下的所有数据库
-
+    public static String UserPath = "";
 
     public static void main(String[] args) throws Exception {
-        System.out.println("hello briefDBMS");
+        FileUtil fileUtil = new FileUtil();
+        System.out.println("<----hello briefDBMS---->");
+        System.out.println("正在初始化系统文件.....");
+        if(fileUtil.init_SYSTEM_filePath())
+            System.out.println("briefDBMS 就绪");
+        else{
+            System.out.println("用户权限设置出现未知错误");
+            System.exit(-1);
+        }
+
         currentDatabase.setName("master");
         AccessControl accessControl= new AccessControl();
-        FileUtil fileUtil = new FileUtil();
         serveUser = null;
         while(serveUser==null) {
             serveUser = accessControl.ConnectServer();

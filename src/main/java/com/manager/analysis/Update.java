@@ -203,40 +203,55 @@ public class Update {
 
     //带where情况涉及主键更新
     public ArrayList<Integer> isFitUpdatePrimary_where(Primarydata primarydata,ArrayList<String> update_Attribution,ArrayList<String> where_Attribution,ArrayList<String> where_Content){
-        int primary_flag=0;
         int fit_line = 0;
-        ArrayList<Integer> update_line=new ArrayList<Integer>();//记录需要改变
-        for(String attribution:primarydata.getAlltable().getAttribute()){
-            for(String update:update_Attribution){
-                if(update.equals(attribution)){
-                    //判断是否为主键
-                        //开始循环判断where成立
+        ArrayList<Integer> update_line=new ArrayList<Integer>();//记录需要改变){
                         FileUtil fileUtil = new FileUtil();
                         AnalysisUtil analysisUtil = new AnalysisUtil();
+
+        int primary_flag = 0;//提取主键位置
+        int fit_flag = 0;//匹配次数
+        boolean isPrimary = false;//输入参数是否带主键，包括多主键
+        ArrayList<Integer> primary_flag_arr = new ArrayList<Integer>();
+        for(boolean isTrue:primarydata.getAlltable().getIsPrimary()){
+            if(isTrue){
+                primary_flag_arr.add(primary_flag);
+            }
+            primary_flag++;
+        }
+            for(int up=0;up<update_Attribution.size();up++){
+                for(int pf:primary_flag_arr){
+                    if(update_Attribution.get(up).equals(primarydata.getAlltable().getAttribute().get(pf)))
+                        fit_flag++;
+                }
+            }
+            if(fit_flag==primary_flag_arr.size()){
+                isPrimary=true;
+            }
+
+            //多主键判断完成
+
                         //获取记录空间
                         String[] record = fileUtil.getCertainLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",9).split("");
-                        for(int i=analysisUtil.getSYS_First(primarydata);i<=analysisUtil.getSYS_End(primarydata);i++){
-
-
-                            if(record[(i-1)].equals("1")){
-                                String tableDateLine = fileUtil.getCertainLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",(11+i));
+                        for(int i=analysisUtil.getSYS_First(primarydata);i<=analysisUtil.getSYS_End(primarydata);i++) {
+                            if (record[(i - 1)].equals("1")) {
+                                String tableDateLine = fileUtil.getCertainLineOfTxt(primarydata.getTablePath() + "/" + primarydata.getTableName() + ".txt", (11 + i));
                                 String[] tableDate = tableDateLine.split(",");
                                 //封装
-                                for(int j=0;j<primarydata.getAlltable().getAttribute().size();j++){
-                                    primarydata.getAlltable().getContent().set(j,tableDate[j]);
+                                for (int j = 0; j < primarydata.getAlltable().getAttribute().size(); j++) {
+                                    primarydata.getAlltable().getContent().set(j, tableDate[j]);
                                 }
                                 //已得到一个封装完成的tableContent，下个循环会覆盖Content
                                 //开始判断条件成立
                                 int where_succeed = 0;
-                                for(int j=0;j<primarydata.getAlltable().getAttribute().size();j++){
-                                    for(int k=0;k<where_Attribution.size();k++){
-                                        System.out.println("数据表中的属性为："+primarydata.getAlltable().getAttribute().get(j));
-                                        System.out.println("条件判断的属性为："+where_Attribution.get(k));
-                                        if(primarydata.getAlltable().getAttribute().get(j).equals(where_Attribution.get(k))){
+                                for (int j = 0; j < primarydata.getAlltable().getAttribute().size(); j++) {
+                                    for (int k = 0; k < where_Attribution.size(); k++) {
+                                        System.out.println("数据表中的属性为：" + primarydata.getAlltable().getAttribute().get(j));
+                                        System.out.println("条件判断的属性为：" + where_Attribution.get(k));
+                                        if (primarydata.getAlltable().getAttribute().get(j).equals(where_Attribution.get(k))) {
                                             //如果相等，则判断Content是否匹配
-                                            System.out.println("数据表中的内容为："+primarydata.getAlltable().getContent().get(j));
-                                            System.out.println("条件判断的内容为："+where_Content.get(k));
-                                            if(primarydata.getAlltable().getContent().get(j).equals(where_Content.get(k))){
+                                            System.out.println("数据表中的内容为：" + primarydata.getAlltable().getContent().get(j));
+                                            System.out.println("条件判断的内容为：" + where_Content.get(k));
+                                            if (primarydata.getAlltable().getContent().get(j).equals(where_Content.get(k))) {
                                                 //匹配成功，进行记录
                                                 where_succeed++;
                                             }
@@ -244,15 +259,15 @@ public class Update {
                                     }
                                 }
                                 //全部匹配一遍
-                                System.out.println("需匹配次数:"+where_Attribution.size());
-                                System.out.println("匹配成功次数:"+where_succeed);
+                                System.out.println("需匹配次数:" + where_Attribution.size());
+                                System.out.println("匹配成功次数:" + where_succeed);
                                 if (where_succeed == where_Attribution.size()) {
                                     fit_line++;
                                     //行数封装进int 数组中
-                                    update_line.add((11+i));
+                                    update_line.add((11 + i));
                                 }
-                                if(fit_line==2){
-                                    if(primarydata.getAlltable().getIsPrimary().get(primary_flag)) {
+                                if (fit_line == 2) {
+                                    if (isPrimary) {
                                         System.out.println("修改的内容涉及到主键");
                                         System.out.println("拒绝访问");
                                         return null;
@@ -260,11 +275,6 @@ public class Update {
                                 }
                             }
                         }
-
-                }
-            }
-            primary_flag++;
-        }
         return update_line;
     }
 

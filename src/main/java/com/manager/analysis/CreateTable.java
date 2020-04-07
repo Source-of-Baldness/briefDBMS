@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 public class CreateTable {
     public void baseAnalysis(String sql) throws Exception {
-        Pattern p = Pattern.compile("^[\\s]*CREATE[\\s]TABLE[\\s]+([A-Z][A-Z]*)([\\s]+)?\\((([\\s]+)?(([\\w]*[\\s]+(INT[\\s]*(NOT[\\s]*NULL|PRIMARY[\\s]*KEY)?,|VARCHAR\\([\\d]+\\)[\\s]*(NOT[\\s]*NULL|PRIMARY[\\s]*KEY)?,))+))*[\\s]*\\)[\\s]*$");
+        Pattern p = Pattern.compile("^[\\s]*CREATE[\\s]TABLE[\\s]+([A-Z][A-Z]*)([\\s]+)?\\((([\\s]+)?(([\\w]*[\\s]+(INT[\\s]*(NOT[\\s]*NULL|PRIMARY[\\s]*KEY)?,|VARCHAR\\([\\d]+\\)[\\s]*(NOT[\\s]*NULL|PRIMARY[\\s]*KEY)?,*))+))*[\\s]*\\)[\\s]*$");
         Matcher m = p.matcher(sql);
         boolean result = m.matches();
         System.out.println("二次验证"+result);

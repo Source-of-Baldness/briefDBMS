@@ -42,7 +42,7 @@ public class TableRecord {
         String formatInfo = "SYS_TITLE_FORMAT_BEGIN\r\n" +
                 "SYS_FormatInfo@@"+formatInfoSize+"\r\n" +
                 "SYS_RecordSpace@@"+dataLines+"\r\n" +
-                "SYS_AllRecoeds@@0\r\n" +
+                "SYS_AllRecords@@0\r\n" +
                 "SYS_First@@0\r\n" +
                 "SYS_End@@0\r\n" +
                 "SYS_TITLE_FORMAT_END";
@@ -243,12 +243,13 @@ public class TableRecord {
         FileUtil fileUtil = new FileUtil();
         int first_index = 0;
         int end_index = 0;
+        int allRecords = 0;
         int flag_index = 0;
         ArrayList<String> records = new ArrayList<String>();
         records = fileUtil.getlContentLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt","SYS_TITLE_RECORD_BEGIN","SYS_TITLE_RECORD_END");
         String record = records.get(0);
         first_index = record.indexOf("1")+1;
-        //end_index = first_index;
+        //end_index = first_index; 用indexOF一直叠加，直到找到最后一个值
         while(end_index !=(-1)){
             end_index = record.indexOf("1",(end_index+1));
             if(end_index!=(-1))
@@ -260,6 +261,18 @@ public class TableRecord {
         System.out.println("end:"+end_index);
         fileUtil.replaceLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",5,"SYS_First@@"+first_index);
         fileUtil.replaceLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",6,"SYS_End@@"+end_index);
+//更新SYS_AllRecoeds@@***
+        String[] records_arr = records.get(0).split("");
+        for(String record_flag:records_arr){
+            if(record_flag.equals("1")){
+                allRecords++;
+            }
+        }
+        fileUtil.replaceLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",4,"SYS_AllRecords@@"+allRecords);
+
+
+
+
         return true;
     }
 

@@ -1,6 +1,7 @@
 package com.util;
 
 import com.alibaba.fastjson.JSON;
+import com.ui.ManinUI;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -255,6 +256,22 @@ public class FileUtil {
         }
         Files.write(Paths.get(filePath), replaced);
         return true;
+    }
+
+    //初始化系统文件，默认在D盘
+    public boolean init_SYSTEM_filePath(){
+        //建立用户文件
+        if(createFile("sa.txt","D:/BRIEFDBMS/ACCOUNT")){
+            ManinUI.UserPath= "D:/BRIEFDBMS/ACCOUNT";
+            return true;
+        }
+        else {
+            if(createFile("sa.txt","./BRIEFDBMS/ACCOUNT")){
+                ManinUI.UserPath= "./BRIEFDBMS/ACCOUNT";
+                return true;
+            }
+        }
+            return false;
     }
 
 

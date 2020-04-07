@@ -202,6 +202,7 @@ public class Insert {
                 //开始更新表索引数据
                 tableRecord.updata_table_index(primarydata);
 
+
             }else{
                 System.out.println("INSERT 语句中列的数目大于 VALUES 子句中指定的值的数目。VALUES 子句中值的数目必须与 INSERT 语句中指定的列的数目匹配。");
                 return ;
