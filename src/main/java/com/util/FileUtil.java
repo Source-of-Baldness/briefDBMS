@@ -97,7 +97,7 @@ public class FileUtil {
 
     // 读取指定某一行的文本
     //传入参数filepath精确到文件名 如：（F:/DEMO/123.txt，10）获取第十行内容
-    public  String getCertainLineOfTxt(String filePath, int lineNumber){
+    public String getCertainLineOfTxt(String filePath, int lineNumber){
         FileReader fr = null;
         LineNumberReader reader = null;
         String txt = "";

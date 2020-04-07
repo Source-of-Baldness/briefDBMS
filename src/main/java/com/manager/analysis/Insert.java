@@ -287,7 +287,6 @@ public class Insert {
                }
         }
         return true;
-
     }
 
     //解析输入的数据类型 仅支持 varchar、int、空值
@@ -306,7 +305,6 @@ public class Insert {
             System.out.println("INT");
             return "INT";
         }
-
 
     }
 

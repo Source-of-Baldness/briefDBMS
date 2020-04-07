@@ -97,4 +97,28 @@ public class AnalysisUtil {
         }
         return null;
     }
+
+    //获取SYS_First@@****
+    public int getSYS_First(Primarydata primarydata){
+        FileUtil fileUtil = new FileUtil();
+        String SYS_First_String = fileUtil.getCertainLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",5);
+        String[] SYS_First = SYS_First_String.split("@@");
+        return Integer.parseInt(SYS_First[1]);
+    }
+    //获取SYS_End@@****
+    public int getSYS_End(Primarydata primarydata){
+        FileUtil fileUtil = new FileUtil();
+        String SYS_End_String = fileUtil.getCertainLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",6);
+        String[] SYS_End = SYS_End_String.split("@@");
+        return Integer.parseInt(SYS_End[1]);
+    }
+    //获取SYS_RecordSpace@@****
+    public int getSYS_RecordSpace(Primarydata primarydata){
+        FileUtil fileUtil = new FileUtil();
+        String SYS_RecordSpace_String = fileUtil.getCertainLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",3);
+        String[] SYS_RecordSpace = SYS_RecordSpace_String.split("@@");
+        return Integer.parseInt(SYS_RecordSpace[1]);
+    }
+
+
 }
