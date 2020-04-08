@@ -229,7 +229,6 @@ public class Update {
             }
 
             //多主键判断完成
-
                         //获取记录空间
                         String[] record = fileUtil.getCertainLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",9).split("");
                         for(int i=analysisUtil.getSYS_First(primarydata);i<=analysisUtil.getSYS_End(primarydata);i++) {

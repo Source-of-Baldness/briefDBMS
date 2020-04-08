@@ -1,5 +1,7 @@
 package com.ui;
 
+import com.Socket.SocketService;
+import com.Socket.impl.SocketServiceImpl;
 import com.manager.data.UserRecord;
 import com.manager.security.AccessControl;
 import com.pojo.Database;
@@ -8,8 +10,8 @@ import com.util.AnalysisUtil;
 import com.util.FileUtil;
 import com.util.SmallBigChange;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,8 +21,20 @@ public class ManinUI {
     public static Database currentDatabase = new Database();//默认master数据库
     public static ArrayList<String> databaseNames = new ArrayList<String>();//当前用户下的所有数据库
     public static String UserPath = "";
+    private ServerSocket serverSocket;
 
     public static void main(String[] args) throws Exception {
+        //建立Socket通信
+        SocketServiceImpl socketService = new SocketServiceImpl();
+        System.out.println("正在建立通信,");
+        socketService.socketConnection();
+        socketService.sqlCommand("接收client端数据");
+        socketService.sqlResult("Service端通信正常");
+        socketService.sqlClose();
+        socketService.socketClose();
+
+
+
         FileUtil fileUtil = new FileUtil();
         System.out.println("<----hello briefDBMS---->");
         System.out.println("正在初始化系统文件.....");
@@ -30,6 +44,12 @@ public class ManinUI {
             System.out.println("用户权限设置出现未知错误");
             System.exit(-1);
         }
+
+
+
+
+
+
 
         currentDatabase.setName("master");
         AccessControl accessControl= new AccessControl();
@@ -57,4 +77,8 @@ public class ManinUI {
             au.grammarPositon(sql);
         }
     }
+
+
+
+
 }
