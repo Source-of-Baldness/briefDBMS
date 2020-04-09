@@ -37,7 +37,7 @@ public class Update {
             //分离待修改列名，内容
             String[] update_ALL=  m.group(2).split("[\\s]*,[\\s]*");
             for(String update_String:update_ALL){
-                String[] update = update_String.split("[\\s]*=[\\s]*");
+                String[] update = update_String.trim().split("[\\s]*=[\\s]*");
                 for(int i=0;i<update.length;i++){
                     if(i%2==0)
                         update_Attribution.add(update[i]);
@@ -54,7 +54,7 @@ public class Update {
             }
             try {
                 for(String update_String:update_ALL){
-                    String[] update = update_String.split("[\\s]*=[\\s]*");
+                    String[] update = update_String.trim().split("[\\s]*=[\\s]*");
                     for(int i=0;i<update.length;i++){
                         if(i%2==0)
                             where_Attribution.add(update[i]);

@@ -62,7 +62,10 @@ public class ManinUI {
 
             //get SQL
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            String sql = br.readLine();
+            //读取用户输入的sql语句
+            //String sql = br.readLine();
+            String sql = socketService.sqlCommand();
+
             //toBigChar
             SmallBigChange sctc = new SmallBigChange();
             sql = sctc.toBigchar(sql);

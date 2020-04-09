@@ -83,8 +83,8 @@ public class SocketServiceImpl implements SocketService {
 	@Override
 	public void sqlResult(String result) {
 		Socket client;
-		String serverAddress = "127.0.0.1";
-		int port = 1234;
+		String serverAddress = "127.0.0.2";
+		int port = 1235;
 		BufferedReader in;
 		PrintWriter out;
 		try {
@@ -105,8 +105,8 @@ public class SocketServiceImpl implements SocketService {
 			out.close();
 			client.close();
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ignored) {
+
 		}
 
 	}
