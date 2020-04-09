@@ -15,13 +15,9 @@ public class AccessControl {
         //String id = input.next();
         String id = socketService.sqlCommand();
 
-
-
         System.out.println("密码:");
         //String pwd = input.next();
         String pwd = socketService.sqlCommand();
-
-
 
         //如果账号密码正确,返回User类
         user.setId(id);

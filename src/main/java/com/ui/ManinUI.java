@@ -27,8 +27,8 @@ public class ManinUI {
         //建立Socket通信
         SocketServiceImpl socketService = new SocketServiceImpl();
         System.out.println("正在建立通信,");
+        socketService.socketConnection();
         socketService.sqlCommand();
-
 
 
         FileUtil fileUtil = new FileUtil();
@@ -41,18 +41,16 @@ public class ManinUI {
             System.exit(-1);
         }
 
-
-
-
-
-
-
         currentDatabase.setName("master");
         AccessControl accessControl= new AccessControl();
-        serveUser = null;
-        while(serveUser==null) {
+        serveUser.setId(null);serveUser.setPwd(null);
+        while(serveUser.getId()==null || serveUser.getId().equals("")) {
+            System.out.println("未连接到Brief SQL 服务");
             serveUser = accessControl.ConnectServer();
         }
+
+        //返回客户机连接成功提示
+        socketService.sqlResult("true");
 
         while(true){
             Scanner input = new Scanner(System.in);

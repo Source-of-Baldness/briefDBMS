@@ -18,7 +18,6 @@ public class SocketServiceImpl implements SocketService {
 		String clientContent = "";
 		socketConnection();
 		clientContent = sqlConnect();
-		sqlResult();
 		sqlClose();
 		socketClose();
 		return clientContent;
@@ -36,37 +35,31 @@ public class SocketServiceImpl implements SocketService {
 			int remotePort = client.getLocalPort();
 			System.out.println("C# Client connected succeed. IP:" + remoteIP + ", Port: " + remotePort);
 
-
 		}catch(Exception e){
 			System.out.println(e.toString());
-			out.println("与客户端连接发生异常。!");
 		}
 	}
 
 	@Override
 	public String sqlConnect() {
 		try{
+			String serviceContent="Service端通信正常";
 			String clientContent="接收client端数据";
 			//获得 client 端的输入输出流，为进行交互做准备
 			in = new BufferedReader(new InputStreamReader(client.getInputStream(),"UTF-8"));
-			out = new PrintWriter(new OutputStreamWriter(client.getOutputStream(),"UTF-8"),true);
 			//获得 client 端发送的数据
 			clientContent = in.readLine();
 			System.out.println("Client message is: " + clientContent);
+			out = new PrintWriter(new OutputStreamWriter(client.getOutputStream(),"UTF-8"),true);
+			serviceContent="Service端通信正常";
+			out.printf(serviceContent);
 			return clientContent;
 		}catch(Exception e){
 			System.out.println(e.toString());
-			out.println("服务端传输数据发生异常");
 		}
 		return null;
 	}
 
-	@Override
-	public void sqlResult() {
-		// 向 client 端发送响应数据
-		String serviceContent="Service端通信正常";
-		out.println(serviceContent);
-	}
 
 	@Override
 	public void sqlClose() {
@@ -75,7 +68,6 @@ public class SocketServiceImpl implements SocketService {
 			in.close();
 		}catch(Exception e){
 			System.out.println(e.toString());
-			out.println("关闭数据传输连接失败");
 		}
 	}
 
@@ -85,8 +77,38 @@ public class SocketServiceImpl implements SocketService {
 			server.close();
 		}catch(Exception e){
 			System.out.println(e.toString());
-			out.println("关闭Socket服务失败");
 		}
+	}
+
+	@Override
+	public void sqlResult(String result) {
+		Socket client;
+		String serverAddress = "127.0.0.1";
+		int port = 1234;
+		BufferedReader in;
+		PrintWriter out;
+		try {
+			// 连接 server 端
+			client = new Socket(serverAddress, port);
+			// 为发送数据做准备
+			in = new BufferedReader(new InputStreamReader(System.in));
+			out = new PrintWriter(client.getOutputStream(), true);
+			// 向 server 发送数据
+			out.printf(result);
+			// 接收来自 server 的响应数据
+			in = new BufferedReader(new InputStreamReader(client
+					.getInputStream()));
+			System.out.println("客户端接收数据情况: " + in.readLine());
+
+			// 关闭各个流
+			in.close();
+			out.close();
+			client.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }
