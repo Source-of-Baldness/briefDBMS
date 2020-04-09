@@ -1,9 +1,10 @@
 package com.Socket;
 
 public interface SocketService {
+    public String sqlCommand ();
     public void socketConnection();
-    public void  sqlCommand(String clientContent);
-    public void sqlResult(String serviceContent);
+    public String sqlConnect();
+    public void sqlResult();
     public void sqlClose();
     public void socketClose();
 }

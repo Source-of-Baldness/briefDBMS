@@ -27,11 +27,7 @@ public class ManinUI {
         //建立Socket通信
         SocketServiceImpl socketService = new SocketServiceImpl();
         System.out.println("正在建立通信,");
-        socketService.socketConnection();
-        socketService.sqlCommand("接收client端数据");
-        socketService.sqlResult("Service端通信正常");
-        socketService.sqlClose();
-        socketService.socketClose();
+        socketService.sqlCommand();
 
 
 
