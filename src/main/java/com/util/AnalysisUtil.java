@@ -23,8 +23,10 @@ public class AnalysisUtil {
         CreateDatabase createDatabase = new CreateDatabase();
         CreateTable createTable = new CreateTable();
         SwitchDatabase switchDatabase = new SwitchDatabase();
+        RefreshDatabase refreshDatabase = new RefreshDatabase();
+        BreakConnect breakConnect = new BreakConnect();
         //注入正则表达式
-        Pattern p = Pattern.compile("^[\\s]*(INSERT|SELECT|ALTER|DELETE|UPDATE|CREATE DATABASE|CREATE TABLE|SWITCH DATABASE)[\\s](.|\\n)+$");
+        Pattern p = Pattern.compile("^[\\s]*(INSERT|SELECT|ALTER|DELETE|UPDATE|CREATE DATABASE|CREATE TABLE|SWITCH DATABASE|REFRESH DATABASE SYSTEM|BREAK CONNECT SYSTEM)[\\s](.|\\n)+$");
         Matcher m = p.matcher(sql);
         boolean result = m.matches();
         System.out.println(result);
@@ -52,6 +54,12 @@ public class AnalysisUtil {
                     if("SWITCH".equals(split_sql[i])){
                         switchDatabase.baseAnalysis(sql);
                     }
+                    if("REFRESH".equals(split_sql[i])){
+                        refreshDatabase.baseAnalysis(sql);
+                    }
+                    if("BREAK".equals(split_sql[i])){
+                        breakConnect.baseAnalysis(sql);
+                    }
                 }
                 break;
             }
@@ -78,6 +86,17 @@ public class AnalysisUtil {
             return true;
         else
             return false;
+    }
+
+    //获取指定数据库下的表名
+    public String allTableName(String filePath)
+    {
+        //获取目录下所有文件名
+        filePath = filePath+"/TABLE";
+        FileUtil fu=new FileUtil();
+        ArrayList<String> allfile=fu.getDirName(filePath);
+        String allfiletext= allfile.toString();
+        return allfiletext;
     }
 
     //获取指定表名的表结构

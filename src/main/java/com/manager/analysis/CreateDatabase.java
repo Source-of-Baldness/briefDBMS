@@ -1,5 +1,6 @@
 package com.manager.analysis;
 
+import com.Socket.impl.SocketServiceImpl;
 import com.manager.data.PrimaryRecord;
 import com.pojo.Database;
 import com.ui.ManinUI;
@@ -13,6 +14,7 @@ import java.util.regex.Pattern;
 public class CreateDatabase {
     public void baseAnalysis(String sql) throws IOException {
         Database database = new Database();
+
         //二次验证
         Pattern p = Pattern.compile("^[\\s]*CREATE[\\s]+DATABASE[\\s]+([A-Z][A-Z]*)([\\s]+)?\\(([\\s]+)?([\\s]*(NAME=|FILENAME=|SIZE=|MAXSIZE=|FILEGROWTH=)(.*),*)*[\\s]*\\)[\\s]*$");
         Matcher m = p.matcher(sql);
@@ -22,8 +24,12 @@ public class CreateDatabase {
         try {
             if(result)
                database = parameterSplit(sql);
-            else
-                System.exit(-1);
+            else{
+                SocketServiceImpl socketService = new SocketServiceImpl();
+                socketService.sqlResult("1");
+                socketService.sqlResult("CREATE DATABASE ( 附近有语法错误; ");
+            }
+
         }catch (Exception e){
             System.out.println("参数绑定错误，CREATE DATABASE ( 附近有语法错误; ");
         }
@@ -56,6 +62,9 @@ public class CreateDatabase {
                     //建立相同库的判断
                     for(String databaseName:ManinUI.databaseNames){
                         if(database.getName().equals(databaseName)){
+                            SocketServiceImpl socketService = new SocketServiceImpl();
+                            socketService.sqlResult("1");
+                            socketService.sqlResult("数据库建立失败，已经存在 '"+database.getName()+"' 数据库。");
                             System.out.println("数据库建立失败，已经存在 '"+database.getName()+"' 数据库。");
                             return null;
                         }
@@ -104,7 +113,9 @@ public class CreateDatabase {
         System.out.println("checked");
         if(flag!=4) {
             System.out.println("参数绑定错误，CREATE DATABASE ( 附近有语法错误; ");
-            System.exit(-1);
+            SocketServiceImpl socketService = new SocketServiceImpl();
+            socketService.sqlResult("1");
+            socketService.sqlResult("参数绑定错误，CREATE DATABASE ( 附近有语法错误; ");
         }
         else
             return database;

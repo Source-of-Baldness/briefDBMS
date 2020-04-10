@@ -192,6 +192,7 @@ public class TableRecord {
     //写入主键头部信息，SYS_TABLE_PRIMARY_KEY_INFO
     public boolean primaryKey_record(Primarydata primarydata) throws IOException {
         Table table = new Table();
+        int primary_flag = 0;
         table = primarydata.getAlltable();
         //新建文件SYS_TABLE_PRIMARY_KEY_INFO
         FileUtil fileUtil = new FileUtil();
@@ -200,11 +201,10 @@ public class TableRecord {
         ArrayList<String> primaryKey_Attribute = new ArrayList<String>();
         for(Boolean primaryKey:table.getIsPrimary()){
             //如果为真，则将主键属性封装进ArrayList中
-            int primary_flag = 0;
             if(primaryKey){
                 primaryKey_Attribute.add(table.getAttribute().get(primary_flag));
-                primary_flag++;
             }
+            primary_flag++;
         }
         String primaryMerge = StringUtils.join(primaryKey_Attribute,",");
         //写入基本信息

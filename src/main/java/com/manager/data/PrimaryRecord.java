@@ -1,5 +1,6 @@
 package com.manager.data;
 
+import com.Socket.impl.SocketServiceImpl;
 import com.pojo.Database;
 import com.pojo.Primarydata;
 import com.ui.ManinUI;
@@ -37,7 +38,9 @@ public class PrimaryRecord {
         if(fileUtil.writeToFile("SYS_DATABASE_NAME_UNIQUE@@"+database.getFilename()+"@@"+database.getName(),"D:\\BRIEFDBMS\\account\\"+ ManinUI.serveUser.getId() +".txt"))
             flag++;
         if(flag==5){
-            System.out.println("命令成功完成。");
+            SocketServiceImpl socketService = new SocketServiceImpl();
+            socketService.sqlResult("1");
+            socketService.sqlResult("命令成功完成。 ");
         }else{
             System.out.println(flag);
         }

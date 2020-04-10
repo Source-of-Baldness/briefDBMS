@@ -2,7 +2,6 @@ package com.manager.analysis;
 
 import com.manager.data.TableRecord;
 import com.pojo.Primarydata;
-import com.pojo.Table;
 import com.ui.ManinUI;
 import com.util.AnalysisUtil;
 import com.util.FileUtil;
