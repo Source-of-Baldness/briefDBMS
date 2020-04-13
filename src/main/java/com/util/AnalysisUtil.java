@@ -1,5 +1,6 @@
 package com.util;
 
+import com.Socket.impl.SocketServiceImpl;
 import com.alibaba.fastjson.JSON;
 import com.manager.analysis.*;
 import com.pojo.Database;
@@ -63,6 +64,10 @@ public class AnalysisUtil {
                 }
                 break;
             }
+        }else{
+            SocketServiceImpl socketService = new SocketServiceImpl();
+            socketService.sqlResult("1");
+            socketService.sqlResult("SQL 命令出现语法错误。");
         }
     }
 

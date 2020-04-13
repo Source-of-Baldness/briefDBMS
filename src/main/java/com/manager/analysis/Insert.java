@@ -1,5 +1,6 @@
 package com.manager.analysis;
 
+import com.Socket.impl.SocketServiceImpl;
 import com.manager.data.TableRecord;
 import com.pojo.Primarydata;
 import com.pojo.Table;
@@ -90,10 +91,16 @@ public class Insert {
                 tableRecord.updata_table_index(primarydata);
 
             }else{
-                System.out.println("列名或所提供值的数目与表定义不匹配。");
+                System.out.println("");
+                SocketServiceImpl socketService = new SocketServiceImpl();
+                socketService.sqlResult("1");
+                socketService.sqlResult("列名或所提供值的数目与表定义不匹配。");
             }
         }else{
             System.out.println("不存在这张表");
+            SocketServiceImpl socketService = new SocketServiceImpl();
+            socketService.sqlResult("1");
+            socketService.sqlResult("不存在这张表。");
             return;
         }
     }
@@ -136,6 +143,9 @@ public class Insert {
                 int repeat_flag = 0;//判断列名是否重复
                 if(!primarydata.getAlltable().getAttribute().contains(attribution)){
                     System.out.println("列名 '"+attribution+"' 无效。");
+                    SocketServiceImpl socketService = new SocketServiceImpl();
+                    socketService.sqlResult("1");
+                    socketService.sqlResult("列名 '"+attribution+"' 无效。");
                     return ;
                 }
                 //判断列名是否重复
@@ -145,6 +155,9 @@ public class Insert {
                 }
                 if(repeat_flag>1){
                     System.out.println("在 INSERT 的 SET 子句或列列表中多次指定了列名“"+attribution+"”。在同一子句中不得为一个列分配多个值。请修改该子句，以确保一个列仅更新一次。如果此语句在视图中更新或插入列，列别名可能掩盖您的代码中的重复情况。");
+                    SocketServiceImpl socketService = new SocketServiceImpl();
+                    socketService.sqlResult("1");
+                    socketService.sqlResult("在 INSERT 的 SET 子句或列列表中多次指定了列名“"+attribution+"”。在同一子句中不得为一个列分配多个值。请修改该子句，以确保一个列仅更新一次。如果此语句在视图中更新或插入列，列别名可能掩盖您的代码中的重复情况。");
                     return ;
                 }
             }
@@ -205,10 +218,16 @@ public class Insert {
 
             }else{
                 System.out.println("INSERT 语句中列的数目大于 VALUES 子句中指定的值的数目。VALUES 子句中值的数目必须与 INSERT 语句中指定的列的数目匹配。");
+                SocketServiceImpl socketService = new SocketServiceImpl();
+                socketService.sqlResult("1");
+                socketService.sqlResult("INSERT 语句中列的数目大于 VALUES 子句中指定的值的数目。VALUES 子句中值的数目必须与 INSERT 语句中指定的列的数目匹配。");
                 return ;
             }
         }else{
             System.out.println("不存在这张表");
+            SocketServiceImpl socketService = new SocketServiceImpl();
+            socketService.sqlResult("1");
+            socketService.sqlResult("不存在这张表");
             return;
         }
     }
@@ -225,6 +244,9 @@ public class Insert {
                 if(table.getDatatype().get(i).equals("INT")){
                     if(table.getDatatype().get(i).indexOf(dataType)==(-1)){
                         System.out.println("在将 varchar 值" +table.getContent().get(i)+" 转换成数据类型 int 时失败。");
+                        SocketServiceImpl socketService = new SocketServiceImpl();
+                        socketService.sqlResult("1");
+                        socketService.sqlResult("在将 varchar 值" +table.getContent().get(i)+" 转换成数据类型 int 时失败。");
                         return false;
                     }else{
                         //进行int 整型大小是否超过最大值，超过进行捕获
@@ -232,6 +254,9 @@ public class Insert {
                             Integer.parseInt(table.getContent().get(i));
                         }catch (Exception e){
                             System.out.println("在插入表 '"+primarydata.getTableName()+"' 中，列 '"+table.getAttribute().get(i)+"' 超过int 类型的最大值 '2147483647',已自动转化为 '2147483647'");
+                            SocketServiceImpl socketService = new SocketServiceImpl();
+                            socketService.sqlResult("1");
+                            socketService.sqlResult("在插入表 '"+primarydata.getTableName()+"' 中，列 '"+table.getAttribute().get(i)+"' 超过int 类型的最大值 '2147483647',已自动转化为 '2147483647'");
                             table.getContent().set(i,"2147483647");
                         }
                     }
@@ -259,6 +284,9 @@ public class Insert {
                 //NOT NULL 约束
                 if(table.getIsNull().get(i)){
                     System.out.println("不能将值 NULL 插入列'"+ table.getAttribute().get(i)+"'表 '"+primarydata.getTableName()+"'；列不允许有 Null 值。INSERT 失败。");
+                    SocketServiceImpl socketService = new SocketServiceImpl();
+                    socketService.sqlResult("1");
+                    socketService.sqlResult("不能将值 NULL 插入列'"+ table.getAttribute().get(i)+"'表 '"+primarydata.getTableName()+"'；列不允许有 Null 值。INSERT 失败。");
                     return false;
                 }
             }
@@ -284,6 +312,9 @@ public class Insert {
         for(String primary_Key_split:primary_Key){
                if(primaryMerge.equals(primary_Key_split)){
                    System.out.println("违反了 PRIMARY KEY 约束“PK__"+primarydata.getTableName()+"__*”。不能在对象“"+primarydata.getTableName()+"”中插入重复键。重复键值为 ("+primaryMerge+")。");
+                   SocketServiceImpl socketService = new SocketServiceImpl();
+                   socketService.sqlResult("1");
+                   socketService.sqlResult("违反了 PRIMARY KEY 约束“PK__"+primarydata.getTableName()+"__*”。不能在对象“"+primarydata.getTableName()+"”中插入重复键。重复键值为 ("+primaryMerge+")。");
                    return false;
                }
         }

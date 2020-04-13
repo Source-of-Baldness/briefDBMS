@@ -1,5 +1,6 @@
 package com.manager.analysis;
 
+import com.Socket.impl.SocketServiceImpl;
 import com.manager.data.PrimaryRecord;
 import com.manager.data.TableRecord;
 import com.manager.data.UserRecord;
@@ -80,6 +81,9 @@ public class CreateTable {
             System.out.println("表 '"+tableName+"' 准备就绪。");
         }else{
             System.out.println("当前数据库 '"+ManinUI.currentDatabase.getName()+"' 已存在 表 '"+tableName+"' 创建表结构失败。");
+            SocketServiceImpl socketService = new SocketServiceImpl();
+            socketService.sqlResult("1");
+            socketService.sqlResult("当前数据库 '"+ManinUI.currentDatabase.getName()+"' 已存在 表 '"+tableName+"' 创建表结构失败。");
             return null;
         }
 
@@ -114,6 +118,9 @@ public class CreateTable {
             TableRecord tableRecord = new TableRecord();
             if(tableRecord.writeBase_Table(table,primarydata)){
                 System.out.println("存入表文件成功");
+                SocketServiceImpl socketService = new SocketServiceImpl();
+                socketService.sqlResult("1");
+                socketService.sqlResult("命令已成功完成。");
             }else{
                 System.out.println("存入表文件失败");
                 return null;

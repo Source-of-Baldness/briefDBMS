@@ -1,5 +1,6 @@
 package com.manager.analysis;
 
+import com.Socket.impl.SocketServiceImpl;
 import com.manager.data.TableRecord;
 import com.pojo.Primarydata;
 import com.ui.ManinUI;
@@ -99,6 +100,9 @@ public class Update {
                 int repeat_flag = 0;//判断列名是否重复
                 if(!primarydata.getAlltable().getAttribute().contains(attribution)){
                     System.out.println("列名 '"+attribution+"' 无效。");
+                    SocketServiceImpl socketService = new SocketServiceImpl();
+                    socketService.sqlResult("1");
+                    socketService.sqlResult("列名 '"+attribution+"' 无效。");
                     return ;
                 }
                 //判断列名是否重复
@@ -108,6 +112,9 @@ public class Update {
                 }
                 if(repeat_flag>1){
                     System.out.println("在 UPDATE 的 SET 子句或列列表中多次指定了列名“"+attribution+"”。在同一子句中不得为一个列分配多个值。请修改该子句，以确保一个列仅更新一次。如果此语句在视图中更新或插入列，列别名可能掩盖您的代码中的重复情况。");
+                    SocketServiceImpl socketService = new SocketServiceImpl();
+                    socketService.sqlResult("1");
+                    socketService.sqlResult("在 UPDATE 的 SET 子句或列列表中多次指定了列名“"+attribution+"”。在同一子句中不得为一个列分配多个值。请修改该子句，以确保一个列仅更新一次。如果此语句在视图中更新或插入列，列别名可能掩盖您的代码中的重复情况。");
                     return ;
                 }
             }
@@ -117,6 +124,9 @@ public class Update {
                 int repeat_flag = 0;//判断列名是否重复
                 if(!primarydata.getAlltable().getAttribute().contains(attribution)){
                     System.out.println("列名 '"+attribution+"' 无效。");
+                    SocketServiceImpl socketService = new SocketServiceImpl();
+                    socketService.sqlResult("1");
+                    socketService.sqlResult("列名 '"+attribution+"' 无效。");
                     return ;
                 }
                 //判断列名是否重复
@@ -126,6 +136,9 @@ public class Update {
                 }
                 if(repeat_flag>1){
                     System.out.println("在 UPDATE 的 WHERE 子句或列列表中多次指定了列名“"+attribution+"”。在同一子句中不得为一个列分配多个值。请修改该子句，以确保一个列仅更新一次。如果此语句在视图中更新或插入列，列别名可能掩盖您的代码中的重复情况。");
+                    SocketServiceImpl socketService = new SocketServiceImpl();
+                    socketService.sqlResult("1");
+                    socketService.sqlResult("在 UPDATE 的 WHERE 子句或列列表中多次指定了列名“"+attribution+"”。在同一子句中不得为一个列分配多个值。请修改该子句，以确保一个列仅更新一次。如果此语句在视图中更新或插入列，列别名可能掩盖您的代码中的重复情况。");
                     return ;
                 }
             }
@@ -138,6 +151,9 @@ public class Update {
                 existsWhere(primarydata,update_Attribution,update_Content,where_Attribution,where_Content);
         }else{
             System.out.println("UPDATE 附近有语法错误。");
+            SocketServiceImpl socketService = new SocketServiceImpl();
+            socketService.sqlResult("1");
+            socketService.sqlResult("UPDATE 附近有语法错误。");
         }
     }
 
@@ -187,6 +203,9 @@ public class Update {
                         System.out.println("first:"+SYS_First[1]+" end:"+SYS_End[1]);
                         if(!SYS_First[1].equals(SYS_End[1])){
                             System.out.println("拒绝访问");
+                            SocketServiceImpl socketService = new SocketServiceImpl();
+                            socketService.sqlResult("1");
+                            socketService.sqlResult("拒绝访问");
                             return true;
                         }else{
                             System.out.println("该表无数据或者仅有一条数据");
@@ -268,6 +287,9 @@ public class Update {
                                     if (isPrimary) {
                                         System.out.println("修改的内容涉及到主键");
                                         System.out.println("拒绝访问");
+                                        SocketServiceImpl socketService = new SocketServiceImpl();
+                                        socketService.sqlResult("1");
+                                        socketService.sqlResult("拒绝访问");
                                         return null;
                                     }
                                 }

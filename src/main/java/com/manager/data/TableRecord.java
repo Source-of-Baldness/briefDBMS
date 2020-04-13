@@ -1,5 +1,6 @@
 package com.manager.data;
 
+import com.Socket.impl.SocketServiceImpl;
 import com.manager.analysis.Insert;
 import com.pojo.Primarydata;
 import com.pojo.Table;
@@ -182,7 +183,12 @@ public class TableRecord {
         //记录数据，0->1
         if(fileUtil.replaceLineOfTxt(primarydata.getTablePath()+"/"+primarydata.getTableName()+".txt",9,record)){
             System.out.println("替换数据记录表完成。");
+
+
             System.out.println("命令成功完成。");
+            SocketServiceImpl socketService = new SocketServiceImpl();
+            socketService.sqlResult("1");
+            socketService.sqlResult("命令成功完成。");
         }
 
 
@@ -356,6 +362,9 @@ public class TableRecord {
             }
         }
         System.out.println("受影响的行数("+influence_num+")");
+        SocketServiceImpl socketService = new SocketServiceImpl();
+        socketService.sqlResult("1");
+        socketService.sqlResult("受影响的行数("+influence_num+")");
         return false;
     }
 
@@ -391,6 +400,8 @@ public class TableRecord {
                 System.out.println("进行约束性判断");
                 Insert insert = new Insert();
                 if(insert.restrainJudge(primarydata)){
+
+
                     System.out.println("约束性判断成功.");
                     //进行表数据的更新
 
@@ -429,7 +440,83 @@ public class TableRecord {
                 System.out.println("更新后的内容为:"+primarydata.getAlltable().getContent());
         }
         System.out.println("受影响的行数("+update_line.size()+")");
+        SocketServiceImpl socketService = new SocketServiceImpl();
+        socketService.sqlResult("1");
+        socketService.sqlResult("受影响的行数("+update_line.size()+")");
         return false;
 
     }
+
+
+    public boolean updatePrimary(Primarydata primarydata){
+        Table table = new Table();
+        table = primarydata.getAlltable();
+        for(int i = 0;i<table.getAttribute().size();i++){
+            //输入参数的类型判断
+            Insert insert = new Insert();
+            String dataType = insert.inputDatatype(table.getContent().get(i));
+            if(!dataType.equals("NULL")){
+                //判断表数据结构是否为整型
+                if(table.getDatatype().get(i).equals("INT")){
+                    if(table.getDatatype().get(i).indexOf(dataType)==(-1)){
+                        System.out.println("在将 varchar 值" +table.getContent().get(i)+" 转换成数据类型 int 时失败。");
+                        SocketServiceImpl socketService = new SocketServiceImpl();
+                        socketService.sqlResult("1");
+                        socketService.sqlResult("在将 varchar 值" +table.getContent().get(i)+" 转换成数据类型 int 时失败。");
+                        return false;
+                    }else{
+                        //进行int 整型大小是否超过最大值，超过进行捕获
+                        try{
+                            Integer.parseInt(table.getContent().get(i));
+                        }catch (Exception e){
+                            System.out.println("在插入表 '"+primarydata.getTableName()+"' 中，列 '"+table.getAttribute().get(i)+"' 超过int 类型的最大值 '2147483647',已自动转化为 '2147483647'");
+                            SocketServiceImpl socketService = new SocketServiceImpl();
+                            socketService.sqlResult("1");
+                            socketService.sqlResult("在插入表 '"+primarydata.getTableName()+"' 中，列 '"+table.getAttribute().get(i)+"' 超过int 类型的最大值 '2147483647',已自动转化为 '2147483647'");
+                            table.getContent().set(i,"2147483647");
+                        }
+                    }
+                }
+                //计算字符类型数据长度是否合理，不合理进行截取
+                else {//不是整型则为字符型
+                    //读取表结构varchar类型的字节最大值
+                    int dataLength = Integer.parseInt(table.getDatatype().get(i).substring((table.getDatatype().get(i).indexOf("(")+1),table.getDatatype().get(i).indexOf(")")));
+                    System.out.println("表结构的参数字节大小为："+dataLength);
+                    //读取输入的字符字节大小
+                    String input_String = table.getContent().get(i);
+                    int input_Bytes = input_String.getBytes().length;
+                    System.out.println("传入的参数字节大小为："+input_Bytes);
+                    //进行判断,输入>规定，进行截取，否则不做操作
+                    if(input_Bytes>dataLength){
+                        //进行截取
+                        input_String = input_String.substring(0,dataLength);
+                        System.out.println("截取后的内容为："+input_String);
+                        //封装截取内容至表结构
+                        table.getContent().set(i,input_String);
+                        System.out.println("封装之后的内容为："+table.getContent().get(i));
+                    }
+                }
+            }else{
+                //NOT NULL 约束
+                if(table.getIsNull().get(i)){
+                    System.out.println("不能将值 NULL 插入列'"+ table.getAttribute().get(i)+"'表 '"+primarydata.getTableName()+"'；列不允许有 Null 值。INSERT 失败。");
+                    SocketServiceImpl socketService = new SocketServiceImpl();
+                    socketService.sqlResult("1");
+                    socketService.sqlResult("不能将值 NULL 插入列'"+ table.getAttribute().get(i)+"'表 '"+primarydata.getTableName()+"'；列不允许有 Null 值。INSERT 失败。");
+                    return false;
+                }
+            }
+
+        }
+        //主键判断是否重复
+        //提取主键信息
+        FileUtil fileUtil = new FileUtil();
+        ArrayList<String> primary_Key = new ArrayList<String>();
+        primary_Key = fileUtil.getlLimitsLineOfTxt(ManinUI.currentDatabase.getFilename()+"/SYS_TABLE_PRIMARY_KEY_INFO/"+primarydata.getTableName()+".txt",2,-1);
+
+        return true;
+    }
+
+
+
 }

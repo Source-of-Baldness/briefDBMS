@@ -13,6 +13,7 @@ import com.util.SmallBigChange;
 import java.io.*;
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ManinUI {
@@ -30,6 +31,8 @@ public class ManinUI {
         System.out.println("正在建立通信,");
         socketService.socketConnection();
         socketService.sqlCommand();
+
+
 
         AnalysisUtil au= new AnalysisUtil();
         FileUtil fileUtil = new FileUtil();

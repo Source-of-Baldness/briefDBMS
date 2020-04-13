@@ -66,7 +66,6 @@ public class CreateDatabase {
                             socketService.sqlResult("1");
                             socketService.sqlResult("数据库建立失败，已经存在 '"+database.getName()+"' 数据库。");
                             System.out.println("数据库建立失败，已经存在 '"+database.getName()+"' 数据库。");
-                            return null;
                         }
                     }
                 }

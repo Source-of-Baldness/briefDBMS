@@ -92,7 +92,7 @@ public class SocketServiceImpl implements SocketService {
 			client = new Socket(serverAddress, port);
 			// 为发送数据做准备
 			in = new BufferedReader(new InputStreamReader(System.in));
-			out = new PrintWriter(client.getOutputStream(), true);
+			out = new PrintWriter(client.getOutputStream(),true);
 			// 向 server 发送数据
 			out.printf(result);
 			// 接收来自 server 的响应数据
